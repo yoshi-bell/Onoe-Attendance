@@ -16,27 +16,74 @@ class Attendance extends Model
         'end_time',
     ];
 
-    /**
-     * この勤怠記録を所有するユーザーを取得
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * この勤怠記録に紐づく休憩記録を取得
-     */
     public function rests()
     {
         return $this->hasMany(Rest::class);
     }
 
-    /**
-     * この勤怠記録に紐づく修正申請を取得
-     */
     public function correctionRequest()
     {
         return $this->hasOne(AttendanceCorrectionRequest::class);
+    }
+
+    /**
+     * この勤務の合計休憩時間を H:i 形式で取得するアクセサ
+     */
+    public function getTotalRestTimeAttribute()
+    {
+        $totalSeconds = 0;
+        foreach ($this->rests as $rest) {
+            if ($rest->start_time && $rest->end_time) {
+                $start = new \Carbon\Carbon($rest->start_time);
+                $end = new \Carbon\Carbon($rest->end_time);
+                $totalSeconds += $end->diffInSeconds($start);
+            }
+        }
+        return $this->formatSecondsToHi($totalSeconds);
+    }
+
+    /**
+     * この勤務の実働時間を H:i 形式で取得するアクセサ
+     */
+    public function getWorkTimeAttribute()
+    {
+        if (!$this->start_time || !$this->end_time) {
+            return null;
+        }
+
+        $start = new \Carbon\Carbon($this->start_time);
+        $end = new \Carbon\Carbon($this->end_time);
+
+        $totalWorkSeconds = $end->diffInSeconds($start);
+
+        $totalRestSeconds = 0;
+        foreach ($this->rests as $rest) {
+            if ($rest->start_time && $rest->end_time) {
+                $restStart = new \Carbon\Carbon($rest->start_time);
+                $restEnd = new \Carbon\Carbon($rest->end_time);
+                $totalRestSeconds += $restEnd->diffInSeconds($restStart);
+            }
+        }
+
+        $netWorkSeconds = $totalWorkSeconds - $totalRestSeconds;
+        $netWorkSeconds = $netWorkSeconds > 0 ? $netWorkSeconds : 0;
+
+        return $this->formatSecondsToHi($netWorkSeconds);
+    }
+
+    /**
+     * 秒数を H:i 形式の文字列にフォーマットするヘルパーメソッド
+     */
+    private function formatSecondsToHi($seconds)
+    {
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
 }

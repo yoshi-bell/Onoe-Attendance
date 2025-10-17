@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Atte')</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     @yield('css')
@@ -29,7 +33,7 @@
                         {{-- 一般ユーザー用ヘッダー --}}
                         <li class="header-nav__item"><a class="header-nav__link" href="/attendance">勤怠</a></li>
                         <li class="header-nav__item"><a class="header-nav__link" href="/attendance/list">勤怠一覧</a></li>
-                        <li class="header-nav__item"><a class="header-nav__link" href="#">申請</a></li>
+                        <li class="header-nav__item"><a class="header-nav__link" href="#">申請一覧</a></li>
                     @endif
                     <li class="header-nav__item">
                         <form action="{{ route('logout') }}" method="post">
@@ -47,11 +51,5 @@
     <main>
         @yield('content')
     </main>
-
-    <footer class="footer">
-        <div class="footer__inner">
-            <small>Atte, inc.</small>
-        </div>
-    </footer>
 </body>
 </html>

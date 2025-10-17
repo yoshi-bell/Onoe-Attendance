@@ -1,0 +1,63 @@
+.verify-email__content {
+    margin: 0 auto;
+    padding: 65px 15px;
+    max-width: 700px; /* mock02の見本に合わせ幅を調整 */
+    text-align: center; /* 全体を中央揃え */
+}
+
+.verify-email-form {
+    margin: 0 auto;
+    max-width: 600px; /* mock02の見本に合わせ幅を調整 */
+    text-align: center;
+    background-color: #ffffff; /* mock02の見本に合わせて背景色を追加 */
+    padding: 50px;
+    border-radius: 5px;
+}
+
+.verify-email-form__message {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.verify-email-form__success-message {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.form__button {
+    margin-bottom: 30px; /* ボタンと再送リンクの間隔を調整 */
+}
+
+/* 「認証はこちらから」ボタンのスタイル */
+.form__button--auth-link {
+    padding: 10px 40px;
+    display: inline-block;
+    border-radius: 3px;
+    background-color: #000000; /* mock02の見本に合わせて黒に変更 */
+    color: #ffffff; /* mock02の見本に合わせて白に変更 */
+    text-decoration: none;
+    font-size: 16px; /* mock02の見本に合わせて調整 */
+    font-weight: bold;
+    transition: opacity 0.3s;
+    border: none; /* mock01の線を削除 */
+}
+
+.form__button--auth-link:hover {
+    opacity: 0.7;
+}
+
+/* 「認証メールを再送する」リンクのスタイル */
+.login__button-submit { /* 再送ボタン */
+    color: #007bff; /* mock02の見本に合わせて青に変更 */
+    font-size: 14px; /* mock02の見本に合わせて調整 */
+    text-decoration: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}

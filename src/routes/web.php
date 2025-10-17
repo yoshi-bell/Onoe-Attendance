@@ -37,5 +37,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 休憩終了処理のルート
     Route::post('/rest/end', [RestController::class, 'end'])->name('rest.end');
 
+    // 勤怠一覧ページのルート
+    Route::get('/attendance/list', [AttendanceController::class, 'list'])->name('attendance.list');
+
     // 今後、他の認証必須ページはここに追加します
 });

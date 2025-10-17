@@ -25,44 +25,32 @@
     @else
         <div class="timestamp-grid">
             {{-- 勤務開始ボタン --}}
-            <div class="timestamp-item">
-                @if(!$isWorking)
-                <form class="timestamp-form" action="{{ route('attendance.start') }}" method="post">
-                    @csrf
-                    <button type="submit" class="timestamp-button">出勤</button>
-                </form>
-                @endif
-            </div>
+            @if(!$isWorking)
+            <form class="timestamp-form" action="{{ route('attendance.start') }}" method="post">
+                @csrf
+                <button type="submit" class="timestamp-button">出勤</button>
+            </form>
+            @endif
 
-            {{-- 勤務終了ボタン --}}
-            <div class="timestamp-item">
-                @if($isWorking && !$isOnBreak)
+            {{-- 勤務終了ボタン と 休憩開始ボタン --}}
+            @if($isWorking && !$isOnBreak)
                 <form class="timestamp-form" action="{{ route('attendance.end') }}" method="post">
                     @csrf
                     <button type="submit" class="timestamp-button">退勤</button>
                 </form>
-                @endif
-            </div>
-
-            {{-- 休憩開始ボタン --}}
-            <div class="timestamp-item">
-                @if($isWorking && !$isOnBreak)
                 <form class="timestamp-form" action="{{ route('rest.start') }}" method="post">
                     @csrf
-                    <button type="submit" class="timestamp-button">休憩入</button>
+                    <button type="submit" class="timestamp-button timestamp-button--rest">休憩入</button>
                 </form>
-                @endif
-            </div>
+            @endif
 
             {{-- 休憩終了ボタン --}}
-            <div class="timestamp-item">
-                @if($isWorking && $isOnBreak)
-                <form class="timestamp-form" action="{{ route('rest.end') }}" method="post">
-                    @csrf
-                    <button type="submit" class="timestamp-button">休憩戻</button>
-                </form>
-                @endif
-            </div>
+            @if($isWorking && $isOnBreak)
+            <form class="timestamp-form" action="{{ route('rest.end') }}" method="post">
+                @csrf
+                <button type="submit" class="timestamp-button timestamp-button--rest">休憩戻</button>
+            </form>
+            @endif
         </div>
     @endif
 </div>

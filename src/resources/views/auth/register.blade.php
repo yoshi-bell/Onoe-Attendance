@@ -7,40 +7,73 @@
 @endsection
 
 @section('content')
-<div class="register-form">
-    <h1 class="register-form__heading">会員登録</h1>
-    <div class="register-form__inner">
-        <form class="register-form__form" action="{{ route('register') }}" method="post">
-            @csrf
-            <div class="form-group">
-                <input class="form-input" type="text" name="name" id="name" placeholder="名前" value="{{ old('name') }}">
-                @error('name')
-                    <p class="error-message">{{ $message }}</p>
-                @enderror
+<div class="register-form__content">
+    <div class="register-form__heading">
+        <h1>会員登録</h1>
+    </div>
+    <form class="form" action="{{ route('register') }}" method="post">
+        @csrf
+        <div class="form__group">
+            <div class="form__group-title">
+                <span class="form__label--item">名前</span>
             </div>
-            <div class="form-group">
-                <input class="form-input" type="email" name="email" id="email" placeholder="メールアドレス" value="{{ old('email') }}">
-                @error('email')
-                    <p class="error-message">{{ $message }}</p>
-                @enderror
+            <div class="form__group-content">
+                <div class="form__input--text">
+                    <input type="text" name="name" value="{{ old('name') }}" />
+                </div>
+                <div class="form__error">
+                    @error('name')
+                    {{ $message }}
+                    @enderror
+                </div>
             </div>
-            <div class="form-group">
-                <input class="form-input" type="password" name="password" id="password" placeholder="パスワード">
-                @error('password')
-                    <p class="error-message">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="form-group">
-                <input class="form-input" type="password" name="password_confirmation" id="password_confirmation" placeholder="確認用パスワード">
-            </div>
-            <div class="form-group">
-                <button type="submit" class="submit-button">会員登録</button>
-            </div>
-        </form>
-        <div class="login-link">
-            <p class="login-link__text">アカウントをお持ちの方はこちらから</p>
-            <a href="{{ route('login') }}">ログイン</a>
         </div>
+        <div class="form__group">
+            <div class="form__group-title">
+                <span class="form__label--item">メールアドレス</span>
+            </div>
+            <div class="form__group-content">
+                <div class="form__input--text">
+                    <input type="email" name="email" value="{{ old('email') }}" />
+                </div>
+                <div class="form__error">
+                    @error('email')
+                    {{ $message }}
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="form__group">
+            <div class="form__group-title">
+                <span class="form__label--item">パスワード</span>
+            </div>
+            <div class="form__group-content">
+                <div class="form__input--text">
+                    <input type="password" name="password" />
+                </div>
+                <div class="form__error">
+                    @error('password')
+                    {{ $message }}
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="form__group">
+            <div class="form__group-title">
+                <span class="form__label--item">確認用パスワード</span>
+            </div>
+            <div class="form__group-content">
+                <div class="form__input--text">
+                    <input type="password" name="password_confirmation" />
+                </div>
+            </div>
+        </div>
+        <div class="form__button">
+            <button class="form__button-submit" type="submit">登録する</button>
+        </div>
+    </form>
+    <div class="login__link">
+        <a class="login__button-submit" href="{{ route('login') }}">ログインはこちら</a>
     </div>
 </div>
 @endsection
