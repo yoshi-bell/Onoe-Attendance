@@ -153,8 +153,7 @@ class AttendanceController extends Controller
 
             // ビューに渡すための配列に追加
             $calendarData[] = [
-                'date' => $date->day,
-                'dayOfWeek' => $dayOfWeek,
+                'date' => $date->format('m/d') . '(' . $dayOfWeek . ')',
                 'attendance' => $attendanceForDay // データがなければnullが入る
             ];
         }
