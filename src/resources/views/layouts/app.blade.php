@@ -25,23 +25,29 @@
             @auth
             <nav>
                 <ul class="header-nav">
-                    @if(Auth::user()->is_admin)
+                    @if(Auth::check() && Auth::user()->is_admin)
                         {{-- 管理者用ヘッダー --}}
-                        <li class="header-nav__item"><a class="header-nav__link" href="#">勤怠一覧</a></li>
+                        <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.attendance.index') }}">勤怠一覧</a></li>
                         <li class="header-nav__item"><a class="header-nav__link" href="#">スタッフ一覧</a></li>
                         <li class="header-nav__item"><a class="header-nav__link" href="#">申請一覧</a></li>
+                        <li class="header-nav__item">
+                            <form action="{{ route('admin.logout') }}" method="post" novalidate>
+                                @csrf
+                                <button class="header-nav__button">ログアウト</button>
+                            </form>
+                        </li>
                     @else
                         {{-- 一般ユーザー用ヘッダー --}}
                         <li class="header-nav__item"><a class="header-nav__link" href="/attendance">勤怠</a></li>
                         <li class="header-nav__item"><a class="header-nav__link" href="/attendance/list">勤怠一覧</a></li>
                         <li class="header-nav__item"><a class="header-nav__link" href="#">申請一覧</a></li>
+                        <li class="header-nav__item">
+                            <form action="{{ route('logout') }}" method="post" novalidate>
+                                @csrf
+                                <button class="header-nav__button">ログアウト</button>
+                            </form>
+                        </li>
                     @endif
-                    <li class="header-nav__item">
-                        <form action="{{ route('logout') }}" method="post" novalidate>
-                            @csrf
-                            <button class="header-nav__button">ログアウト</button>
-                        </form>
-                    </li>
                 </ul>
             </nav>
             @endauth

@@ -29,5 +29,14 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('usertest'),
             ]);
         }
+
+        // 管理者アカウントの作成
+        User::create([
+            'name' => '管理者',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('adminpass'),
+            'is_admin' => true,
+            'email_verified_at' => now(),
+        ]);
     }
 }

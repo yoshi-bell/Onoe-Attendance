@@ -53,5 +53,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [App\Http\Controllers\AdminLoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [App\Http\Controllers\AdminLoginController::class, 'login']);
-    Route::post('/logout', [App\Http\Controllers\AdminLoginController::class, 'logout'])->name('logout');
-});
+        Route::post('/logout', [App\Http\Controllers\AdminLoginController::class, 'logout'])->name('logout');
+    });
+    
+    // 管理者専用機能ルート
+    Route::prefix('admin')->middleware(['auth', 'is_admin'])->name('admin.')->group(function () {
+            // 勤怠一覧
+            Route::get('/attendance/index', [App\Http\Controllers\AdminAttendanceController::class, 'index'])->name('attendance.index');    
+        // TODO: 今後、他の管理者用ルートはここに追加する
+    });
+    

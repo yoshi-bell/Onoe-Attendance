@@ -29,7 +29,7 @@ class AdminLoginController extends Controller
             $request->session()->regenerate();
 
             // TODO: 管理者用のダッシュボードができたら、そちらにリダイレクトする
-            return redirect()->intended('/');
+            return redirect()->route('admin.attendance.index');
         }
 
         return back()->withErrors([
