@@ -40,5 +40,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 勤怠一覧ページのルート
     Route::get('/attendance/list', [AttendanceController::class, 'list'])->name('attendance.list');
 
+    // 勤怠詳細ページのルート
+    Route::get('/attendance/detail/{attendance}', [AttendanceController::class, 'show'])->name('attendance.detail');
+
+    // 勤怠修正申請処理のルート
+    Route::post('/attendances/{attendance}/correction', [AttendanceController::class, 'storeCorrection'])->name('attendances.correction.store');
+
     // 今後、他の認証必須ページはここに追加します
+});
+
+// 管理者用認証ルート
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [App\Http\Controllers\AdminLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [App\Http\Controllers\AdminLoginController::class, 'login']);
+    Route::post('/logout', [App\Http\Controllers\AdminLoginController::class, 'logout'])->name('logout');
 });

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 
-// ↓↓ 以下2行を追記します ↓↓
+// ↓↓ ログイン時にformrequest使用のためこの部分を追記その１ ↓↓
 use App\Http\Requests\LoginRequest;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 
@@ -28,7 +28,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // ↓↓ コーチの指示通り、この部分を追記します ↓↓
+        // ↓↓ ログイン時にformrequest使用のためこの部分を追記その２ ↓↓
         $this->app->bind(FortifyLoginRequest::class, LoginRequest::class);
 
         Fortify::createUsersUsing(CreateNewUser::class);

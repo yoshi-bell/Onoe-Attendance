@@ -26,9 +26,9 @@ class Attendance extends Model
         return $this->hasMany(Rest::class);
     }
 
-    public function correctionRequest()
+    public function corrections()
     {
-        return $this->hasOne(AttendanceCorrectionRequest::class);
+        return $this->hasMany(AttendanceCorrection::class);
     }
 
     /**

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AttendanceCorrectionRequest extends Model
+class AttendanceCorrection extends Model
 {
     use HasFactory;
 
@@ -13,8 +13,6 @@ class AttendanceCorrectionRequest extends Model
         'attendance_id',
         'requester_id',
         'approver_id',
-        'original_start_time',
-        'original_end_time',
         'requested_start_time',
         'requested_end_time',
         'reason',
@@ -43,5 +41,13 @@ class AttendanceCorrectionRequest extends Model
     public function approver()
     {
         return $this->belongsTo(User::class, 'approver_id');
+    }
+
+    /**
+     * この申請に含まれる休憩時間の修正申請を取得
+     */
+    public function restCorrections()
+    {
+        return $this->hasMany(RestCorrection::class);
     }
 }

@@ -26,7 +26,7 @@
         <div class="timestamp-grid">
             {{-- 勤務開始ボタン --}}
             @if(!$isWorking)
-            <form class="timestamp-form" action="{{ route('attendance.start') }}" method="post">
+            <form class="timestamp-form" action="{{ route('attendance.start') }}" method="post" novalidate>
                 @csrf
                 <button type="submit" class="timestamp-button">出勤</button>
             </form>
@@ -34,11 +34,11 @@
 
             {{-- 勤務終了ボタン と 休憩開始ボタン --}}
             @if($isWorking && !$isOnBreak)
-                <form class="timestamp-form" action="{{ route('attendance.end') }}" method="post">
+                <form class="timestamp-form" action="{{ route('attendance.end') }}" method="post" novalidate>
                     @csrf
                     <button type="submit" class="timestamp-button">退勤</button>
                 </form>
-                <form class="timestamp-form" action="{{ route('rest.start') }}" method="post">
+                <form class="timestamp-form" action="{{ route('rest.start') }}" method="post" novalidate>
                     @csrf
                     <button type="submit" class="timestamp-button timestamp-button--rest">休憩入</button>
                 </form>
@@ -46,7 +46,7 @@
 
             {{-- 休憩終了ボタン --}}
             @if($isWorking && $isOnBreak)
-            <form class="timestamp-form" action="{{ route('rest.end') }}" method="post">
+            <form class="timestamp-form" action="{{ route('rest.end') }}" method="post" novalidate>
                 @csrf
                 <button type="submit" class="timestamp-button timestamp-button--rest">休憩戻</button>
             </form>

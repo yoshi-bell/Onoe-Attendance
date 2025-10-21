@@ -37,7 +37,7 @@
                         <li class="header-nav__item"><a class="header-nav__link" href="#">申請一覧</a></li>
                     @endif
                     <li class="header-nav__item">
-                        <form action="{{ route('logout') }}" method="post">
+                        <form action="{{ route('logout') }}" method="post" novalidate>
                             @csrf
                             <button class="header-nav__button">ログアウト</button>
                         </form>

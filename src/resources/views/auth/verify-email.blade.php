@@ -28,7 +28,7 @@
             <a href="http://localhost:8025" target="_blank" class="form__button--auth-link">認証はこちらから</a>
         </div>
 
-        <form class="form" method="POST" action="{{ route('verification.send') }}">
+        <form class="form" method="POST" action="{{ route('verification.send') }}" novalidate>
             @csrf
             <button type="submit" class="login__button-submit">認証メールを再送する</button>
         </form>

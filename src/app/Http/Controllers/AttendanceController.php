@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\AttendanceCorrectionRequest;
 
 class AttendanceController extends Controller
 {
@@ -123,6 +125,7 @@ class AttendanceController extends Controller
      */
     public function list(Request $request)
     {
+        $today = Carbon::today();
         // クエリ文字列から月を取得、なければ現在の月を使う
         $month = $request->input('month', Carbon::now()->format('Y-m'));
         $currentDate = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
@@ -158,6 +161,55 @@ class AttendanceController extends Controller
             ];
         }
 
-        return view('attendance.list', compact('calendarData', 'prevMonth', 'nextMonth', 'currentDate'));
+        return view('attendance.list', compact('calendarData', 'prevMonth', 'nextMonth', 'currentDate', 'today'));
+    }
+
+    /**
+     * 特定の日の勤怠詳細を表示する
+     */
+    public function show(Attendance $attendance)
+    {
+        // 承認待ちの修正申請があるかを確認するためにリレーションを読み込む
+        $attendance->load(['rests', 'corrections.restCorrections']);
+
+        return view('attendance.detail', compact('attendance'));
+    }
+
+    /**
+     * 勤怠修正申請を保存する
+     */
+    public function storeCorrection(AttendanceCorrectionRequest $request, Attendance $attendance)
+    {
+        try {
+            DB::transaction(function () use ($request, $attendance) {
+                $workDate = Carbon::parse($attendance->work_date)->format('Y-m-d');
+
+                // 勤怠修正申請を作成
+                $attendanceCorrection = $attendance->corrections()->create([
+                    'requester_id' => Auth::id(),
+                    'requested_start_time' => $workDate . ' ' . $request->input('requested_start_time'),
+                    'requested_end_time' => $workDate . ' ' . $request->input('requested_end_time'),
+                    'reason' => $request->input('reason'),
+                ]);
+
+                // 休憩修正申請を作成
+                if ($request->has('rests')) {
+                    foreach ($request->input('rests') as $restData) {
+                        // 開始・終了時間が両方入力されているものだけを保存
+                        if (!empty($restData['start_time']) && !empty($restData['end_time'])) {
+                            $attendanceCorrection->restCorrections()->create([
+                                'requested_start_time' => $workDate . ' ' . $restData['start_time'],
+                                'requested_end_time' => $workDate . ' ' . $restData['end_time'],
+                            ]);
+                        }
+                    }
+                }
+            });
+        } catch (\Exception $e) {
+            // エラーハンドリング
+            return redirect()->back()->with('error', '申請の送信に失敗しました。もう一度お試しください。');
+        }
+
+        return redirect()->back()->with('success', '勤怠修正申請を送信しました。');
     }
 }

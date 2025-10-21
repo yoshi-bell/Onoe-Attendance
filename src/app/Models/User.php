@@ -30,7 +30,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -51,18 +50,18 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * ユーザーが行った修正申請を取得
+     * ユーザーが行った勤怠修正を取得
      */
-    public function requestedCorrections()
+    public function attendanceCorrections()
     {
-        return $this->hasMany(AttendanceCorrectionRequest::class, 'requester_id');
+        return $this->hasMany(AttendanceCorrection::class, 'requester_id');
     }
 
     /**
-     * ユーザーが承認した修正申請を取得
+     * ユーザーが承認した勤怠修正を取得
      */
-    public function approvedCorrections()
+    public function approvedAttendanceCorrections()
     {
-        return $this->hasMany(AttendanceCorrectionRequest::class, 'approver_id');
+        return $this->hasMany(AttendanceCorrection::class, 'approver_id');
     }
 }

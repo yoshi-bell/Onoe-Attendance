@@ -42,15 +42,21 @@
                         <td>{{ $dayData['attendance']->end_time ? \Carbon\Carbon::parse($dayData['attendance']->end_time)->format('H:i') : '-' }}</td>
                         <td>{{ $dayData['attendance']->total_rest_time }}</td>
                         <td>{{ $dayData['attendance']->work_time ?? '-' }}</td>
+                        <td>
+                            @if ($dayData['attendance'] && \Carbon\Carbon::parse($dayData['attendance']->work_date)->isBefore($today))
+                                <a href="{{ route('attendance.detail', ['attendance' => $dayData['attendance']->id]) }}">詳細</a>
+                            @else
+                                詳細
+                            @endif
+                        </td>
                     @else
-                        {{-- データが存在しない場合 (<td>の数を修正) --}}
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        {{-- データが存在しない場合 --}}
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>詳細</td>
                     @endif
-                    {{-- 「詳細」リンクを@ifの外に出し、常に表示する --}}
-                    <td><a href="#">詳細</a></td>
                 </tr>
             @endforeach
         </tbody>

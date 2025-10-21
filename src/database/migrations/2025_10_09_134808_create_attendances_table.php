@@ -20,6 +20,9 @@ class CreateAttendancesTable extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
             $table->timestamps();
+
+            // 複合ユニークキー制約
+            $table->unique(['user_id', 'work_date']);
         });
     }
 
