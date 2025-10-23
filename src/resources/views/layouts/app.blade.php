@@ -40,7 +40,7 @@
                         {{-- 一般ユーザー用ヘッダー --}}
                         <li class="header-nav__item"><a class="header-nav__link" href="/attendance">勤怠</a></li>
                         <li class="header-nav__item"><a class="header-nav__link" href="/attendance/list">勤怠一覧</a></li>
-                        <li class="header-nav__item"><a class="header-nav__link" href="#">申請一覧</a></li>
+                        <li class="header-nav__item"><a class="header-nav__link" href="{{ route('corrections.index') }}">申請一覧</a></li>
                         <li class="header-nav__item">
                             <form action="{{ route('logout') }}" method="post" novalidate>
                                 @csrf

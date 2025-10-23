@@ -1,0 +1,77 @@
+
+.attendance-list__content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+.attendance-list__heading h1 {
+    color: #000000;
+    font-size: 30px;
+    font-weight: bold;
+    border-left: 8px solid #000000;
+    padding-left: 24px;
+    margin: 0 0 30px 0;
+}
+
+.attendance-table {
+    width: 100%;
+    font-weight: bold;
+    background-color: #FFF;
+    border-radius: 10px;
+    letter-spacing: 3px;
+    text-align: center;
+    color: #737373;
+}
+.attendance-table thead {
+    border-bottom: 3px solid #E1E1E1;
+}
+.attendance-table tr {
+    height: 45px;
+    border-bottom: 2px solid #E1E1E1;
+}
+
+.attendance-table tr:last-child {
+    border-bottom: none;
+}
+
+.attendance-table th:first-child,
+.attendance-table td:first-child {
+    width: 20%;
+}
+
+.attendance-table th:last-child,
+.attendance-table td:last-child {
+    padding: 0 45px 0 20px;
+}
+
+.attendance-table td:last-child {
+    color: #000000;
+}
+.attendance-table a:hover {
+    text-decoration: underline;
+}
+
+.item-list__tabs {
+    width: 100%;
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #000;
+}
+
+.item-list__tab {
+    padding: 15px 55px;
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.item-list__tab:hover {
+    color: #880000;
+}
+
+.item-list__tab.active {
+    color: #000000;
+}
+

@@ -25,7 +25,7 @@ a {
 }
 
 .header__logo img {
-    height: 30px;
+    height: 36px;
     display: block;
 }
 
@@ -34,6 +34,7 @@ a {
     list-style: none;
     margin: 0;
     padding: 0;
+    font-size: 24px;
 }
 
 .header-nav__item {
@@ -42,7 +43,7 @@ a {
 
 .header-nav__link {
     font-weight: bold;
-    font-size: 16px;
+    /* font-size: 16px; */
     color: #ffffff; /* 白文字に変更 */
 }
 
@@ -51,7 +52,7 @@ a {
     border: none;
     cursor: pointer;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 24px;
     font-family: inherit;
     padding: 0;
     color: #ffffff; /* 白文字に変更 */

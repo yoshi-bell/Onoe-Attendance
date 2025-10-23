@@ -17,7 +17,7 @@ class AttendancesTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = User::all();
+        $users = User::where('is_admin', false)->get();
         $today = Carbon::today();
 
         foreach ($users as $user) {
@@ -25,11 +25,16 @@ class AttendancesTableSeeder extends Seeder
             for ($i = 1; $i <= 60; $i++) {
                 $date = $today->copy()->subDays($i);
 
+                // ランダムで休日を設ける (7日間のうちランダムで2日休み)
+                if (rand(1, 7) <= 2) { // 1/7の確率で休日
+                    continue; // 勤怠データを作成しない
+                }
+
                 // 1日1件の勤怠記録を作成
                 $attendance = Attendance::factory()->create([
                     'user_id' => $user->id,
                     'work_date' => $date,
-                    'start_time' => $date->copy()->setTime(9, rand(0, 30)),
+                    'start_time' => $date->copy()->setTime(8, rand(45, 59)),
                     'end_time' => $date->copy()->setTime(18, rand(0, 59)),
                 ]);
 

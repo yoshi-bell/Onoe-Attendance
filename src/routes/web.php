@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\RestController;
+use App\Http\Controllers\CorrectionRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 勤怠修正申請処理のルート
     Route::post('/attendances/{attendance}/correction', [AttendanceController::class, 'storeCorrection'])->name('attendances.correction.store');
+
+    // 申請一覧ページのルート (一般ユーザー)
+    Route::get('/attendance/corrections', [CorrectionRequestController::class, 'index'])->name('corrections.index');
 
     // 今後、他の認証必須ページはここに追加します
 });

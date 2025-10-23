@@ -12,7 +12,6 @@ class AttendanceCorrection extends Model
     protected $fillable = [
         'attendance_id',
         'requester_id',
-        'approver_id',
         'requested_start_time',
         'requested_end_time',
         'reason',
@@ -35,13 +34,7 @@ class AttendanceCorrection extends Model
         return $this->belongsTo(User::class, 'requester_id');
     }
 
-    /**
-     * この申請を承認したユーザーを取得
-     */
-    public function approver()
-    {
-        return $this->belongsTo(User::class, 'approver_id');
-    }
+
 
     /**
      * この申請に含まれる休憩時間の修正申請を取得
