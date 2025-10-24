@@ -48,7 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/attendances/{attendance}/correction', [AttendanceController::class, 'storeCorrection'])->name('attendances.correction.store');
 
     // 申請一覧ページのルート (一般ユーザー)
-    Route::get('/attendance/corrections', [CorrectionRequestController::class, 'index'])->name('corrections.index');
+    Route::get('/stamp_correction_request/list', [CorrectionRequestController::class, 'index'])->name('corrections.index');
 
     // 今後、他の認証必須ページはここに追加します
 });
@@ -56,14 +56,31 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // 管理者用認証ルート
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [App\Http\Controllers\AdminLoginController::class, 'showLoginForm'])->name('login');
+
     Route::post('/login', [App\Http\Controllers\AdminLoginController::class, 'login']);
         Route::post('/logout', [App\Http\Controllers\AdminLoginController::class, 'logout'])->name('logout');
     });
-    
-    // 管理者専用機能ルート
-    Route::prefix('admin')->middleware(['auth', 'is_admin'])->name('admin.')->group(function () {
-            // 勤怠一覧
-            Route::get('/attendance/index', [App\Http\Controllers\AdminAttendanceController::class, 'index'])->name('attendance.index');    
-        // TODO: 今後、他の管理者用ルートはここに追加する
-    });
-    
+
+// 管理者専用機能ルート
+Route::prefix('admin')->middleware(['auth', 'is_admin'])->name('admin.')->group(function () {
+    // 勤怠一覧ページのルート
+    Route::get('/attendance/index', [App\Http\Controllers\AdminAttendanceController::class, 'index'])->name('attendance.index');
+
+    //勤怠詳細ページのルート
+    Route::get('/attendance/{attendance}', [App\Http\Controllers\AdminAttendanceController::class, 'show'])->name('attendance.show');
+    Route::put('/attendance/{attendance}', [App\Http\Controllers\AdminAttendanceController::class, 'update'])->name('attendance.update');
+
+    // 申請一覧ページのルート
+    Route::get('/corrections', [App\Http\Controllers\AdminCorrectionRequestController::class, 'index'])->name('corrections.index');
+
+    // 修正申請承認ページのルート
+    Route::get('/corrections/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'show'])->name('corrections.approve.show');
+    Route::post('/corrections/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'approve'])->name('corrections.approve');
+
+    // スタッフ一覧ページのルート
+    Route::get('/staff/list', [App\Http\Controllers\AdminStaffController::class, 'index'])->name('staff.list');
+
+    // スタッフ別勤怠一覧ページのルート
+    Route::get('/attendance/staff/{user}', [App\Http\Controllers\AdminStaffController::class, 'showAttendance'])->name('attendance.staff.showAttendance');
+});
+

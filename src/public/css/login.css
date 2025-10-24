@@ -41,13 +41,6 @@
     appearance: none;
 }
 
-.form__error {
-    color: #dc3545;
-    text-align: left;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
 .form__button {
     margin-top: 30px;
 }

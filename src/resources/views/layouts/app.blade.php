@@ -28,8 +28,8 @@
                     @if(Auth::check() && Auth::user()->is_admin)
                         {{-- 管理者用ヘッダー --}}
                         <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.attendance.index') }}">勤怠一覧</a></li>
-                        <li class="header-nav__item"><a class="header-nav__link" href="#">スタッフ一覧</a></li>
-                        <li class="header-nav__item"><a class="header-nav__link" href="#">申請一覧</a></li>
+                        <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a></li>
+                        <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.corrections.index') }}">申請一覧</a></li>
                         <li class="header-nav__item">
                             <form action="{{ route('admin.logout') }}" method="post" novalidate>
                                 @csrf

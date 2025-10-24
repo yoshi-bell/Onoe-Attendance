@@ -1,8 +1,8 @@
 /* 全体 */
 .detail__container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 .detail__heading {
@@ -18,65 +18,67 @@
     font-weight: bold;
 }
 
-/* フォーム全体 */
 .detail__form-wrapper {
     background-color: #ffffff;
     border-radius: 8px;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-    /* padding: 30px; */
 }
 
-/* 各フォーム */
 .detail__form-group {
     height: 90px;
     display: flex;
     align-items: center;
-    padding-left: 30px;
-    /* margin-bottom: 20px; */
-    border-bottom: 2px solid #E1E1E1;
+    padding-left: 60px;
+    border-top: 2px solid #E1E1E1;
+}
+
+.detail__form-group:first-child {
+    height: 75px;
+    border-top: none;
 }
 
 .detail__form-group:last-child {
     height: 110px;
-    border-bottom: none;
+    /* border-bottom: none; */
 }
 
+.detail__form-group--reason{
+    height: 110px;
+}
 
 .detail__label {
-    width: 40%;
+    width: 34%;
+    color: #737373;
     font-weight: bold;
     flex-shrink: 0;
+
 }
 
 .detail__text {
-    font-size: 16px;
+    /* margin: 0 10px; */
 }
 
 .detail__input,
 .detail__textarea {
     font-family: 'Inter',sans-serif;
     font-weight: bold;
-    padding: 8px;
+    padding: 0 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    /* font-size: 16px; */
 }
 
 .detail__input{
     font-size: 16px;
 }
 
-.detail__textarea{
-    font-size: 14px;
-}
-
 .detail__textarea {
-    width: 40%;
+    font-size: 14px;
+    max-width: 320px;
+    width: 42%;
+    height: 72px;
     resize: vertical;
-    min-height: 80px;
+    /* min-height: 80px; */
 }
-
-/* 休憩時間 */
+/*
 .detail__sub-title {
     font-size: 18px;
     font-weight: bold;
@@ -84,26 +86,50 @@
     margin-bottom: 15px;
     border-bottom: 1px solid #eee;
     padding-bottom: 5px;
-}
+} */
 
 .detail__form-group--rest {
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
 }
 
-.detail__input--time {
-    width: 120px;
+.detail__text--name{
+    margin-left: 18px;
 }
 
+.detail__text--date{
+    /* width: 40%; */
+    display: flex;
+    letter-spacing: 2px;
+    /* justify-content: space-between; */
+    gap: 116px;
+}
+
+.detail__text--date span{
+    /* margin: 0 30px; */
+    width: 103px;
+    text-align: center;
+}
+
+.detail__input--time,
+.detail__text--time {
+    width: 103px;
+    height: 29px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.detail__text--reason {
+    font-size: 14px;
+}
 /* 時間入力のデフォルトアイコンを非表示にする */
 .detail__input--time::-webkit-calendar-picker-indicator {
     display: none;
 }
 
 .detail__separator {
-    margin: 0 10px;
+    margin: 0 50px;
 }
 
-/* ボタン */
 .detail__button-wrapper {
     text-align: right;
     margin-top: 30px;
@@ -111,10 +137,12 @@
 
 .detail__button {
     width: 130px;
-    background-color: #000000; 
+    height: 50px;
+    background-color: #000000;
     color: white;
     border: none;
     padding: 10px 20px;
+    margin-top: 25px;
     border-radius: 5px;
     font-size: 22px;
     font-weight: bold;
@@ -122,23 +150,24 @@
     transition: background-color 0.3s;
 }
 
-.detail__button:hover {
-    background-color: #218838; /* 少し濃い緑 */
+.detail__button--approved {
+    background-color: #6c757d;
+    cursor: not-allowed;
 }
 
-/* エラーメッセージ */
+.detail__button:hover {
+    background-color: #6c757d;
+}
+
 .detail__error-wrapper {
     width: 100%;
-    padding-left: 120px; /* ラベルの幅と合わせる */
-    margin-top: -15px; /* 上の要素との間隔を詰める */
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.detail__error-wrapper--rest {
-    padding-left: 120px; /* ラベルの幅と合わせる */
-}
-
-.detail__error {
-    color: #dc3545; /* 赤色 */
-    font-size: 14px;
+.detail__pending-message{
+    font-size: 18px;
+    color: #FF0000;
+    opacity: 0.5;
 }

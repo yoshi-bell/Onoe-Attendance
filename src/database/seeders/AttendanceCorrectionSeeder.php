@@ -41,6 +41,7 @@ class AttendanceCorrectionSeeder extends Seeder
                         'requested_end_time' => $requestedEndTime,
                         'reason' => '遅延のため',
                         'status' => $status,
+                        'created_at' => Carbon::parse($attendance->work_date)->addDay(),
                     ]);
 
                     // 休憩修正申請もランダムで作成

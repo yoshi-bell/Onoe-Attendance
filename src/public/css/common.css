@@ -1,8 +1,10 @@
-/* 全体設定 */
+main {
+    padding: 40px 20px;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: #F0EFF2;
-    /* color: #333; */
 }
 
 a {
@@ -10,9 +12,8 @@ a {
     color: inherit;
 }
 
-/* ヘッダー */
 .header {
-    background-color: #000000; /* 黒背景に変更 */
+    background-color: #000000;
     padding: 20px 40px;
 }
 
@@ -43,8 +44,7 @@ a {
 
 .header-nav__link {
     font-weight: bold;
-    /* font-size: 16px; */
-    color: #ffffff; /* 白文字に変更 */
+    color: #ffffff;
 }
 
 .header-nav__button {
@@ -54,11 +54,13 @@ a {
     font-weight: bold;
     font-size: 24px;
     font-family: inherit;
-    padding: 0;
-    color: #ffffff; /* 白文字に変更 */
+    color: #ffffff;
 }
 
-/* メインコンテンツ領域 */
-main {
-    padding: 40px 20px;
+.form__error {
+    color: #dc3545;
+    text-align: left;
+    font-size: 14px;
+    margin: 5px;
 }
+

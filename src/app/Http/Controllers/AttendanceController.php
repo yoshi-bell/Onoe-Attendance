@@ -146,7 +146,6 @@ class AttendanceController extends Controller
         $calendarData = [];
         for ($day = 1; $day <= $daysInMonth; $day++) {
             $date = $currentDate->copy()->day($day);
-            
             // その日の勤怠データが存在するかチェック
             $attendanceForDay = $attendances->get($day);
 
@@ -169,10 +168,11 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-        // 承認待ちの修正申請があるかを確認するためにリレーションを読み込む
         $attendance->load(['rests', 'corrections.restCorrections']);
+        // 承認待ちの申請の中から最新のものを取得
+        $pendingCorrection = $attendance->corrections->where('status', 'pending')->last();
 
-        return view('attendance.detail', compact('attendance'));
+        return view('attendance.detail', compact('attendance', 'pendingCorrection'));
     }
 
     /**

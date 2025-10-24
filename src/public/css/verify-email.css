@@ -33,18 +33,17 @@
     margin-bottom: 30px; /* ボタンと再送リンクの間隔を調整 */
 }
 
-/* 「認証はこちらから」ボタンのスタイル */
 .form__button--auth-link {
     padding: 10px 40px;
     display: inline-block;
     border-radius: 3px;
-    background-color: #000000; /* mock02の見本に合わせて黒に変更 */
-    color: #ffffff; /* mock02の見本に合わせて白に変更 */
+    background-color: #000000;
+    color: #ffffff;
     text-decoration: none;
-    font-size: 16px; /* mock02の見本に合わせて調整 */
+    font-size: 16px;
     font-weight: bold;
     transition: opacity 0.3s;
-    border: none; /* mock01の線を削除 */
+    border: none;
 }
 
 .form__button--auth-link:hover {
@@ -53,8 +52,8 @@
 
 /* 「認証メールを再送する」リンクのスタイル */
 .login__button-submit { /* 再送ボタン */
-    color: #007bff; /* mock02の見本に合わせて青に変更 */
-    font-size: 14px; /* mock02の見本に合わせて調整 */
+    color: #007bff;
+    font-size: 14px;
     text-decoration: underline;
     background: none;
     border: none;

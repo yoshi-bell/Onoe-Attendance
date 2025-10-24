@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Carbon\Carbon;
+use App\Http\Requests\AttendanceCorrectionRequest;
 
 class AdminAttendanceController extends Controller
 {
@@ -28,5 +29,44 @@ class AdminAttendanceController extends Controller
         $nextDate = $date->copy()->addDay()->format('Y-m-d');
 
         return view('admin.attendance.index', compact('attendances', 'date', 'prevDate', 'nextDate'));
+    }
+
+    /**
+     * 勤怠詳細画面を表示する
+     */
+    public function show(Attendance $attendance)
+    {
+        $attendance->load(['user', 'rests', 'corrections.restCorrections']);
+        // 承認待ちの申請の中から最新のものを取得
+        $pendingCorrection = $attendance->corrections->where('status', 'pending')->last();
+
+        return view('admin.attendance.detail', compact('attendance', 'pendingCorrection'));
+    }
+
+    /**
+     * 勤怠情報を更新する
+     */
+    public function update(AttendanceCorrectionRequest $request, Attendance $attendance)
+    {
+        // 勤怠修正を適用
+        $workDate = Carbon::parse($attendance->work_date)->format('Y-m-d');
+        $attendance->start_time = $workDate . ' ' . $request->input('requested_start_time');
+        $attendance->end_time = $workDate . ' ' . $request->input('requested_end_time');
+        $attendance->save();
+
+        // 既存の休憩を削除し、修正後の休憩を適用
+        $attendance->rests()->delete();
+        if ($request->has('rests')) {
+            foreach ($request->input('rests') as $restData) {
+                if (!empty($restData['start_time']) && !empty($restData['end_time'])) {
+                    $attendance->rests()->create([
+                        'start_time' => $workDate . ' ' . $restData['start_time'],
+                        'end_time' => $workDate . ' ' . $restData['end_time'],
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('admin.attendance.show', ['attendance' => $attendance->id])->with('success', '勤怠情報を更新しました。');
     }
 }

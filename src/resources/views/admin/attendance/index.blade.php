@@ -40,7 +40,7 @@
                     <td>{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '' }}</td>
                     <td>{{ $attendance->total_rest_time ?? '0:00' }}</td>
                     <td>{{ $attendance->work_time ?? '' }}</td>
-                    <td><a href="#">詳細</a></td> {{-- TODO: 管理者用詳細ページのルートを後で設定 --}}
+                    <td><a href="{{ route('admin.attendance.show', ['attendance' => $attendance->id]) }}">詳細</a></td>
                 </tr>
             @endforeach
         </tbody>
