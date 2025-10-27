@@ -1,8 +1,6 @@
-/* 全体 */
 .detail__container {
     max-width: 900px;
     margin: 0 auto;
-    /* padding: 20px; */
 }
 
 .detail__heading {
@@ -112,7 +110,7 @@
 
 .detail__input--time,
 .detail__text--time {
-    width: 103px;
+    width: 107px;
     height: 29px;
     text-align: center;
     letter-spacing: 2px;
@@ -123,7 +121,7 @@
 }
 /* 時間入力のデフォルトアイコンを非表示にする */
 .detail__input--time::-webkit-calendar-picker-indicator {
-    display: none;
+    /* display: none; */
 }
 
 .detail__separator {

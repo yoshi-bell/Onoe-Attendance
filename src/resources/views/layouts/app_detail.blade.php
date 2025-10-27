@@ -59,9 +59,9 @@
                     {{-- 通常の修正フォーム表示 --}}
                     <div class="detail__form-group">
                         <label class="detail__label" for="attendance_start_time">出勤・退勤</label>
-                        <input type="time" class="detail__input detail__input--time" id="attendance_start_time" name="requested_start_time" value="{{ \Carbon\Carbon::parse($attendance->start_time)->format('H:i') }}">
+                        <input type="time" class="detail__input detail__input--time" id="attendance_start_time" name="requested_start_time" value="{{ old('requested_start_time', \Carbon\Carbon::parse($attendance->start_time)->format('H:i')) }}">
                         <span class="detail__separator">〜</span>
-                        <input type="time" class="detail__input detail__input--time" name="requested_end_time" value="{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '' }}">
+                        <input type="time" class="detail__input detail__input--time" name="requested_end_time" value="{{ old('requested_end_time', $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '') }}">
                     </div>
                     <div class="detail__error-wrapper">
                         @error('requested_start_time')<p class="form__error">{{ $message }}</p>@enderror
@@ -71,9 +71,9 @@
                     @foreach($attendance->rests as $index => $rest)
                     <div class="detail__form-group">
                         <label class="detail__label" for="rest_start_time_{{ $index }}">休憩{{ $index + 1 }}</label>
-                        <input type="time" class="detail__input detail__input--time" id="rest_start_time_{{ $index }}" name="rests[{{ $rest->id }}][start_time]" value="{{ \Carbon\Carbon::parse($rest->start_time)->format('H:i') }}">
+                        <input type="time" class="detail__input detail__input--time" id="rest_start_time_{{ $index }}" name="rests[{{ $rest->id }}][start_time]" value="{{ old('rests.' . $rest->id . '.start_time', \Carbon\Carbon::parse($rest->start_time)->format('H:i')) }}">
                         <span class="detail__separator">〜</span>
-                        <input type="time" class="detail__input detail__input--time" name="rests[{{ $rest->id }}][end_time]" value="{{ $rest->end_time ? \Carbon\Carbon::parse($rest->end_time)->format('H:i') : '' }}">
+                        <input type="time" class="detail__input detail__input--time" id="rest_end_time_{{ $index }}" name="rests[{{ $rest->id }}][end_time]" value="{{ old('rests.' . $rest->id . '.end_time', $rest->end_time ? \Carbon\Carbon::parse($rest->end_time)->format('H:i') : '') }}">
                     </div>
                     <div class="detail__error-wrapper">
                         @error('rests.'. $rest->id . '.start_time')<p class="form__error">{{ $message }}</p>@enderror
@@ -83,9 +83,9 @@
 
                     <div class="detail__form-group">
                         <label class="detail__label" for="new_rest_start_time">休憩{{ ($index ?? -1) + 2 }}</label>
-                        <input type="time" class="detail__input detail__input--time" name="rests[new][start_time]">
+                        <input type="time" class="detail__input detail__input--time" name="rests[new][start_time]" value="{{ old('rests.new.start_time') }}">
                         <span class="detail__separator">〜</span>
-                        <input type="time" class="detail__input detail__input--time" id="new_rest_end_time" name="rests[new][end_time]">
+                        <input type="time" class="detail__input detail__input--time" id="new_rest_end_time" name="rests[new][end_time]" value="{{ old('rests.new.end_time') }}">
                     </div>
                     <div class="detail__error-wrapper">
                         @error('rests.new.start_time')<p class="form__error">{{ $message }}</p>@enderror
@@ -94,7 +94,7 @@
 
                     <div class="detail__form-group detail__form-group--reason">
                         <label class="detail__label" for="reason">備考</label>
-                        <textarea class="detail__textarea" id="reason" name="reason" rows="3"></textarea>
+                        <textarea class="detail__textarea" id="reason" name="reason" rows="3">{{ old('reason') }}</textarea>
                     </div>
                     <div class="detail__error-wrapper">
                         @error('reason')<p class="form__error">{{ $message }}</p>@enderror

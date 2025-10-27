@@ -28,12 +28,11 @@ class AdminLoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // TODO: 管理者用のダッシュボードができたら、そちらにリダイレクトする
             return redirect()->route('admin.attendance.index');
         }
 
         return back()->withErrors([
-            'email' => 'ログイン情報が登録されていません。',
+            'email' => 'ログイン情報が登録されていません',
         ])->onlyInput('email');
     }
 

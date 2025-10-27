@@ -64,19 +64,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 // 管理者専用機能ルート
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->name('admin.')->group(function () {
     // 勤怠一覧ページのルート
-    Route::get('/attendance/index', [App\Http\Controllers\AdminAttendanceController::class, 'index'])->name('attendance.index');
-
+                Route::get('/attendance/list', [App\Http\Controllers\AdminAttendanceController::class, 'index'])->name('attendance.index');
     //勤怠詳細ページのルート
     Route::get('/attendance/{attendance}', [App\Http\Controllers\AdminAttendanceController::class, 'show'])->name('attendance.show');
     Route::put('/attendance/{attendance}', [App\Http\Controllers\AdminAttendanceController::class, 'update'])->name('attendance.update');
 
     // 申請一覧ページのルート
-    Route::get('/corrections', [App\Http\Controllers\AdminCorrectionRequestController::class, 'index'])->name('corrections.index');
-
+                Route::get('/stamp_correction_request/list', [App\Http\Controllers\AdminCorrectionRequestController::class, 'index'])->name('corrections.index');
     // 修正申請承認ページのルート
-    Route::get('/corrections/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'show'])->name('corrections.approve.show');
-    Route::post('/corrections/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'approve'])->name('corrections.approve');
-
+                Route::get('/stamp_correction_request/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'show'])->name('corrections.approve.show');
+                Route::post('/stamp_correction_request/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'approve'])->name('corrections.approve');
     // スタッフ一覧ページのルート
     Route::get('/staff/list', [App\Http\Controllers\AdminStaffController::class, 'index'])->name('staff.list');
 

@@ -27,8 +27,9 @@ class AdminAttendanceController extends Controller
         // 日付ナビゲーション用
         $prevDate = $date->copy()->subDay()->format('Y-m-d');
         $nextDate = $date->copy()->addDay()->format('Y-m-d');
+        $today = Carbon::today(); // $today変数を定義
 
-        return view('admin.attendance.index', compact('attendances', 'date', 'prevDate', 'nextDate'));
+        return view('admin.attendance.index', compact('attendances', 'date', 'prevDate', 'nextDate', 'today'));
     }
 
     /**

@@ -65,7 +65,7 @@
     <div class="csv-export-button-wrapper">
         {{-- TODO: CSV出力機能の実装 --}}
         <form action="#" method="GET">
-            <button type="submit" class="csv-export-button">CSV出力</button>
+            <button type="submit" class="csv-export-button" >CSV出力</button>
         </form>
     </div>
 </div>

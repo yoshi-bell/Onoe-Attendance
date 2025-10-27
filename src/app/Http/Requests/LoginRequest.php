@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 // Fortifyの標準LoginRequestをインポートし、FortifyLoginRequestという別名で扱う
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 
+use Illuminate\Foundation\Http\FormRequest;
+
 // 継承元をFortifyLoginRequestに変更
 class LoginRequest extends FortifyLoginRequest
 {
@@ -42,6 +44,7 @@ class LoginRequest extends FortifyLoginRequest
             'email.required' => 'メールアドレスを入力してください',
             'email.email' => 'メールアドレスはメール形式で入力してください',
             'password.required' => 'パスワードを入力してください',
+            'failed' => 'ログイン情報が登録されていません',
         ];
     }
 }
