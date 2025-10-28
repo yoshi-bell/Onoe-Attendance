@@ -95,3 +95,12 @@
 .attendance-table a:hover {
     text-decoration: underline;
 }
+
+.attendance-date__input{
+    /* display: none; */
+    max-width: 126px;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+}
