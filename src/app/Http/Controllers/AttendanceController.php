@@ -127,10 +127,10 @@ class AttendanceController extends Controller
     {
         $today = Carbon::today();
         // クエリ文字列から月を取得、なければ現在の月を使う
-        $month = $request->input('month', Carbon::now()->format('Y-m'));
-        $currentDate = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
-        $prevMonth = $currentDate->copy()->subMonth()->format('Y-m');
-        $nextMonth = $currentDate->copy()->addMonth()->format('Y-m');
+        $month = $request->input('month', Carbon::now()->format('Y/m'));
+        $currentDate = Carbon::createFromFormat('Y/m', $month)->startOfMonth();
+        $prevMonth = $currentDate->copy()->subMonth()->format('Y/m');
+        $nextMonth = $currentDate->copy()->addMonth()->format('Y/m');
 
         // 対象月の勤怠記録をすべて取得し、日付をキーにした連想配列に変換
         $attendances = Attendance::where('user_id', Auth::id())

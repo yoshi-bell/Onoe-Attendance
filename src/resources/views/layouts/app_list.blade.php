@@ -27,7 +27,7 @@
         <a class="date-nav-button" href="{{ route(View::getSection('month_nav_route_name'), array_merge($monthNavParams, ['month' => $prevMonth])) }}"><i class="fa-solid fa-arrow-left"></i> 前月</a>
         <div class="date-display" id="monthDisplayTrigger">
             <img src="{{ asset('images/icon-calendar.png') }}" alt="カレンダーアイコン">
-            <input type="text" class="attendance-date__input" id="monthPicker" value="{{ $currentDate->format('Y-m') }}">
+            <input type="text" class="attendance-date__input" id="monthPicker" value="{{ $currentDate->format('Y/m') }}">
         </div>
         <a class="date-nav-button" href="{{ route(View::getSection('month_nav_route_name'), array_merge($monthNavParams, ['month' => $nextMonth])) }}">翌月 <i class="fa-solid fa-arrow-right"></i></a>
     </div>
@@ -83,8 +83,10 @@
 
         const fpMonth = flatpickr(monthPickerInput, {
             locale: flatpickr.l10ns.ja,
-            plugins: [new monthSelectPlugin({})], // ここを修正！
-            dateFormat: 'Y-m',
+            plugins: [new monthSelectPlugin({
+                dateFormat: 'Y/m',
+            })],
+            dateFormat: 'Y/m',
             defaultDate: monthPickerInput.value,
             allowInput: false,
             onChange: function(selectedDates, dateStr, instance) {
