@@ -1,23 +1,19 @@
+
+body {
+    background-color: #FFFFFF;
+}
+
 .verify-email__content {
     margin: 0 auto;
-    padding: 65px 15px;
-    max-width: 700px; /* mock02の見本に合わせ幅を調整 */
-    text-align: center; /* 全体を中央揃え */
+    text-align: center;
 }
 
-.verify-email-form {
-    margin: 0 auto;
-    max-width: 600px; /* mock02の見本に合わせ幅を調整 */
-    text-align: center;
-    background-color: #ffffff; /* mock02の見本に合わせて背景色を追加 */
-    padding: 50px;
-    border-radius: 5px;
-}
 
 .verify-email-form__message {
-    font-size: 16px;
-    line-height: 1.8;
-    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 180px 0 62px;
 }
 
 .verify-email-form__success-message {
@@ -30,33 +26,60 @@
 }
 
 .form__button {
-    margin-bottom: 30px; /* ボタンと再送リンクの間隔を調整 */
+    margin-bottom: 62px;
 }
 
 .form__button--auth-link {
-    padding: 10px 40px;
+    width: 256px;
+    height: 70px;
+    padding: 18px 0;
     display: inline-block;
-    border-radius: 3px;
-    background-color: #000000;
-    color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    background-color: #D9D9D9;
+    color: #000000;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: bold;
     transition: opacity 0.3s;
-    border: none;
 }
 
 .form__button--auth-link:hover {
     opacity: 0.7;
 }
 
-/* 「認証メールを再送する」リンクのスタイル */
-.login__button-submit { /* 再送ボタン */
-    color: #007bff;
-    font-size: 14px;
-    text-decoration: underline;
+.login__button-submit {
+    color: #0073CC;
+    font-size: 20px;
     background: none;
     border: none;
-    padding: 0;
     cursor: pointer;
+}
+
+.responsive__line-break{
+    display: none;
+}
+@media (max-width: 950px) {
+
+    .responsive__line-break {
+        display: block;
+        height: 0;}
+
+    .verify-email-form__message {
+        font-size: 20px;
+        margin: 120px 0 40px;
+        line-height: 1.4;
+    }
+    .form__button{
+        margin-bottom: 38px;
+    }
+
+    .form__button--auth-link{
+        width: 220px;
+        height: 60px;
+        font-size: 20px;
+    }
+    .login__button-submit{
+        font-size: 18px;
+    }
 }

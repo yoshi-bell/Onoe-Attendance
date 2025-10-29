@@ -22,10 +22,10 @@
             </a>
 
             {{-- ↓↓ ログインしている時だけナビゲーションを表示 ↓↓ --}}
-            @auth
+            @if (Auth::check() && ( (Auth::user()->hasVerifiedEmail() && !Auth::user()->is_admin) || Auth::user()->is_admin) )
             <nav>
                 <ul class="header-nav">
-                    @if(Auth::check() && Auth::user()->is_admin)
+                    @if(Auth::user()->is_admin)
                         {{-- 管理者用ヘッダー --}}
                         <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.attendance.index') }}">勤怠一覧</a></li>
                         <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a></li>
@@ -50,7 +50,7 @@
                     @endif
                 </ul>
             </nav>
-            @endauth
+            @endif
             {{-- ↑↑ ここまでがログイン時のみ表示されるナビゲーション ↑↑ --}}
         </div>
     </header>

@@ -1,6 +1,6 @@
 .detail__container {
     max-width: 900px;
-    margin: 0 auto;
+    margin: 55px auto 10px;
 }
 
 .detail__heading {
@@ -9,7 +9,7 @@
     font-weight: bold;
     border-left: 8px solid #000000;
     padding-left: 24px;
-    margin: 0 0 30px 0;
+    margin-bottom: 52px;
 }
 
 .detail__form{
@@ -36,7 +36,6 @@
 
 .detail__form-group:last-child {
     height: 110px;
-    /* border-bottom: none; */
 }
 
 .detail__form-group--reason{
@@ -74,17 +73,7 @@
     width: 42%;
     height: 72px;
     resize: vertical;
-    /* min-height: 80px; */
 }
-/*
-.detail__sub-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 30px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-} */
 
 .detail__form-group--rest {
     /* justify-content: flex-start; */
@@ -119,10 +108,6 @@
 .detail__text--reason {
     font-size: 14px;
 }
-/* 時間入力のデフォルトアイコンを非表示にする */
-.detail__input--time::-webkit-calendar-picker-indicator {
-    /* display: none; */
-}
 
 .detail__separator {
     margin: 0 50px;
@@ -139,7 +124,7 @@
     background-color: #000000;
     color: white;
     border: none;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
     margin-top: 25px;
     border-radius: 5px;
     font-size: 22px;
@@ -168,4 +153,8 @@
     font-size: 18px;
     color: #FF0000;
     opacity: 0.5;
+}
+
+.detail__text--reason{
+    margin-left: 26px;
 }

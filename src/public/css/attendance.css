@@ -11,7 +11,7 @@ main {
 }
 
 .status-header {
-    margin: 150px 0 10px;
+    margin: 140px 0 10px;
     text-align: center;
 }
 
@@ -30,7 +30,7 @@ main {
 }
 
 .datetime-panel {
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
 }
 
 .date-display {
@@ -83,8 +83,10 @@ main {
     /* border: 1px solid #000000; */
 }
 
+
+
 .timestamp-button--rest:hover {
-    background-color: #f0f0f0;
+    background-color: #c3fff2;
 }
 
 .completion-message {
@@ -104,6 +106,7 @@ main {
     }
 
     .timestamp-container{
-        margin: 30px 0 100px;
+        margin: 0;
+        gap: 60px;
     }
 }

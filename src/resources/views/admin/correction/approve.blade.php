@@ -68,7 +68,7 @@
 
             <div class="detail__button-wrapper">
                 @if ($attendanceCorrection->status == 'pending')
-                <button type="submit" class="detail__button">承認する</button>
+                <button type="submit" class="detail__button">承認</button>
                 @else
                 <button type="button" class="detail__button detail__button--approved" disabled>承認済み</button>
                 @endif

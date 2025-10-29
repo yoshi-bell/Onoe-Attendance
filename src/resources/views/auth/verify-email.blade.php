@@ -10,18 +10,18 @@
 <div class="verify-email__content">
     <div class="verify-email-form">
         @if (session('message'))
-            <p class="verify-email-form__message">{{ session('message') }}</p>
+        <p class="verify-email-form__message">{{ session('message') }}</p>
         @else
-            <p class="verify-email-form__message">
-                ご登録ありがとうございます！<br>
-                ご入力いただいたメールアドレスに認証リンクを送信しました。メールをご確認の上、認証を完了してください。
-            </p>
+        <p class="verify-email-form__message">
+            登録していただいたメールアドレスに<span class="responsive__line-break"><br></span>認証メールを送信しました。<br>
+            メール認証を完了してください。
+        </p>
         @endif
 
         @if (session('resent'))
-            <p class="verify-email-form__success-message">
-                新しい認証リンクをあなたのメールアドレスに送信しました。
-            </p>
+        <p class="verify-email-form__success-message">
+            新しい認証リンクをあなたのメールアドレスに送信しました。
+        </p>
         @endif
 
         <div class="form__button">
