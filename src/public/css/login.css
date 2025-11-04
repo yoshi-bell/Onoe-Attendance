@@ -6,8 +6,8 @@ body {
     max-width: 680px;
 }
 
-.login-form__heading {
-    font-size: 18px;
+.login-form__heading h1{
+    font-size: 36px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 45px;

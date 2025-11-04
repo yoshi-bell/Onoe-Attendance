@@ -107,16 +107,22 @@
 
 .csv-export-button-wrapper{
     text-align: right;
+    /* display: flex; */
+    /* justify-content: end; */
+    /* align-items: center; */
+    margin-top: 60px;
 }
 
     .csv-export-button {
+    display: inline-block;
+    text-align: center;
     width: 184px;
     height: 50px;
+    line-height: 50px;
     background-color: #000000;
     color: white;
     border: none;
-    /* padding: 10px 20px; */
-    margin-top: 60px;
+    /* padding: 10px; */
     border-radius: 5px;
     font-size: 22px;
     font-weight: bold;
@@ -127,4 +133,33 @@
 .csv-export-button:hover {
     background-color: #6c757d;}
 
-    
+@media (max-width: 950px) {
+    .attendance-list__content{
+        margin: 12px auto;
+    }
+
+.attendance-table {
+    letter-spacing: 1px;
+}
+    .attendance-list__heading h1{
+        /* margin-bottom: 30px; */
+    }
+}
+
+@media (max-width: 850px){
+    .date-navigation{
+        margin: 15px 0 25px;
+    }
+
+    .attendance-table th:first-child,
+    .attendance-table td:first-child {
+        width: 20%;
+        text-align: left;
+        padding-left: 30px;
+    }
+
+    .attendance-table th:last-child,
+    .attendance-table td:last-child {
+        padding-right: 10px;
+    }
+}

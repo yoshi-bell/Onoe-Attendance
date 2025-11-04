@@ -9,8 +9,8 @@
 @endsection
 
 @section('content')
-    <div class="attendance-list__content">
-        <div class="attendance-list__heading">
+    <div class="correction-list__content">
+        <div class="correction-list__heading">
             <h1>@yield('list_title')</h1>
         </div>
 
@@ -18,7 +18,7 @@
             @yield('tabs')
         </div>
 
-        <table class="attendance-table">
+        <table class="correction-table">
             <thead>
                 <tr>
                     <th>状態</th>
@@ -44,7 +44,7 @@
                         <td>{{ $correction->reason }}</td>
                         <td>{{ \Carbon\Carbon::parse($correction->created_at)->format('Y/m/d') }}</td>
                         <td>
-                            <a href="{{ route(View::getSection('detail_link_route'), [View::getSection('detail_link_param_name') => $correction->id]) }}">詳細</a>
+                            <a href="{{ route(View::getSection('detail_link_route'), [View::getSection('detail_link_param_name') => data_get($correction, View::getSection('detail_link_param_value_field', 'id'))]) }}">詳細</a>
                         </td>
                     </tr>
                 @empty

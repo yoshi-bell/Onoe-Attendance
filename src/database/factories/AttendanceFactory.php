@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Attendance;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Carbon\Carbon;
 
@@ -28,6 +29,7 @@ class AttendanceFactory extends Factory
         $endTime = $startTime->copy()->addHours(9);
 
         return [
+            'user_id' => User::factory(),
             'work_date' => $startTime->toDateString(),
             'start_time' => $startTime,
             'end_time' => $endTime,

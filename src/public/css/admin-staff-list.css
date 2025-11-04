@@ -1,17 +1,20 @@
-.attendance-list__content {
+.staff-list__content {
     max-width: 900px;
     margin: 85px auto;
 }
-.attendance-list__heading h1 {
+.staff-list__heading{
+    margin: 0 0 96px 0;
+}
+
+.staff-list__heading h1 {
     color: #000000;
     font-size: 30px;
     font-weight: bold;
     border-left: 8px solid #000000 ;
     padding-left: 24px;
-    margin: 0 0 96px 0;
 }
 
-.attendance-table {
+.staff-table {
     width: 100%;
     font-weight: bold;
     background-color: #FFF;
@@ -22,36 +25,67 @@
 
 }
 
-.attendance-table thead{
+.staff-table thead{
     border-bottom: 3px solid #E1E1E1;
     }
 
-.attendance-table tr {
+.staff-table tr {
     height: 45px;
     border-bottom: 2px solid #E1E1E1;
 }
 
-.attendance-table tr:last-child {
+.staff-table tr:last-child {
     border-bottom: none;
 }
 
-.attendance-table th:first-child,
-.attendance-table td:first-child {
+.staff-table th:first-child,
+.staff-table td:first-child {
     width: 35%;
     /* text-align: left; */
     padding-left: 96px;
 }
 
-.attendance-table th:last-child,
-.attendance-table td:last-child {
+.staff-table th:last-child,
+.staff-table td:last-child {
     width: 30%;
     padding-right: 30px;
 }
 
-.attendance-table td:last-child {
+.staff-table td:last-child {
     color: #000000;
 }
 
-.attendance-table a:hover {
+.staff-table a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 950px) {
+    .staff-list__content{
+        margin: 49px auto;
+    }
+}
+@media (max-width: 850px) {
+
+    .staff-list__heading{
+        margin-bottom: 30px;
+    }
+
+    .staff-table th:first-child,
+    .staff-table td:first-child {
+        width: 26%;
+        /* text-align: left; */
+        padding-left: 10px;
+    }
+
+    .staff-table th:nth-child(2),
+    .staff-table td:nth-child(2) {
+        width: 53%;
+    }
+
+    .staff-table th:last-child,
+    .staff-table td:last-child {
+        width: 30%;
+        padding-right: 15px;
+    }
+
 }

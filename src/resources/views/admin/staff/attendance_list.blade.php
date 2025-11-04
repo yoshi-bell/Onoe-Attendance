@@ -16,9 +16,21 @@
 
 @section('extra_buttons')
     <div class="csv-export-button-wrapper">
-        {{-- TODO: CSV出力機能の実装 --}}
-        <form action="#" method="GET">
-            <button type="submit" class="csv-export-button">CSV出力</button>
-        </form>
+        <a href="{{ route('admin.attendance.staff.exportCsv', ['user' => $user->id, 'month' => $currentDate->format('Y/m')]) }}" class="csv-export-button" id="export-button">CSV出力</a>
     </div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const exportButton = document.getElementById('export-button');
+
+        if (exportButton) {
+            exportButton.addEventListener('click', function(event) {
+                this.textContent = 'ダウンロード開始';
+                this.style.fontSize = '18px';
+                this.style.pointerEvents = 'none';
+                this.style.opacity = '0.7';
+            });
+        }
+    });
+</script>

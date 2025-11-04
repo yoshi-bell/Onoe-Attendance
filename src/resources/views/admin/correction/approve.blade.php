@@ -8,8 +8,9 @@
 
 @section('content')
 <div class="detail__container">
-    <h1 class="detail__heading">勤怠詳細</h1> {{-- h1タグのクラス名を修正 --}}
-
+    <div class="detail__heading">
+        <h1>勤怠詳細</h1>
+    </div>
     <div class="detail__card">
         <form class="detail__form" action="{{ route('admin.corrections.approve', ['attendanceCorrection' => $attendanceCorrection->id]) }}" method="POST" novalidate>
             @csrf
@@ -55,7 +56,7 @@
                 @else
                 <div class="detail__form-group">
                     <label class="detail__label">休憩</label>
-                    <p class="detail__text">なし</p>
+                    <p class="detail__text--empty">なし</p>
                 </div>
                 @endif
 

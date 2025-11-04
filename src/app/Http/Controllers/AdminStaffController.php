@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Attendance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Response;
 
 class AdminStaffController extends Controller
 {
@@ -25,14 +26,26 @@ class AdminStaffController extends Controller
     public function showAttendance(Request $request, User $user)
     {
         $today = Carbon::today();
-        // クエリ文字列から月を取得、なければ現在の月を使う
         $month = $request->input('month', Carbon::now()->format('Y/m'));
         $currentDate = Carbon::createFromFormat('Y/m', $month)->startOfMonth();
         $prevMonth = $currentDate->copy()->subMonth()->format('Y/m');
         $nextMonth = $currentDate->copy()->addMonth()->format('Y/m');
 
-        // 対象月の勤怠記録をすべて取得し、日付をキーにした連想配列に変換
-        $attendances = Attendance::where('user_id', $user->id) // 認証ユーザーではなく、指定されたユーザーのIDを使用
+        $calendarData = $this->getAttendanceData($user, $currentDate);
+
+        return view('admin.staff.attendance_list', compact('calendarData', 'prevMonth', 'nextMonth', 'currentDate', 'today', 'user'));
+    }
+
+    /**
+     * 特定のユーザーの指定された月の勤怠データを取得する
+     *
+     * @param User $user
+     * @param Carbon $currentDate
+     * @return array
+     */
+    private function getAttendanceData(User $user, Carbon $currentDate)
+    {
+        $attendances = Attendance::where('user_id', $user->id)
             ->whereYear('work_date', $currentDate->year)
             ->whereMonth('work_date', $currentDate->month)
             ->get()
@@ -40,25 +53,75 @@ class AdminStaffController extends Controller
                 return Carbon::parse($item->work_date)->day;
             });
 
-        // カレンダーデータを作成
         $daysInMonth = $currentDate->daysInMonth;
         $calendarData = [];
         for ($day = 1; $day <= $daysInMonth; $day++) {
             $date = $currentDate->copy()->day($day);
-            // その日の勤怠データが存在するかチェック
             $attendanceForDay = $attendances->get($day);
 
-            // 曜日を取得
             $week = ['日', '月', '火', '水', '木', '金', '土'];
             $dayOfWeek = $week[$date->dayOfWeek];
 
-            // ビューに渡すための配列に追加
             $calendarData[] = [
                 'date' => $date->format('m/d') . '(' . $dayOfWeek . ')',
-                'attendance' => $attendanceForDay // データがなければnullが入る
+                'attendance' => $attendanceForDay
             ];
         }
 
-        return view('admin.staff.attendance_list', compact('calendarData', 'prevMonth', 'nextMonth', 'currentDate', 'today', 'user'));
+        return $calendarData;
+    }
+
+    /**
+     * スタッフの月次勤怠一覧をCSVとしてエクスポートする
+     */
+    public function exportCsv(Request $request, User $user)
+    {
+        $month = $request->input('month', Carbon::now()->format('Y/m'));
+        $currentDate = Carbon::createFromFormat('Y/m', $month)->startOfMonth();
+        $calendarData = $this->getAttendanceData($user, $currentDate);
+
+        $fileName = 'attendance_' . $user->name . '_' . $currentDate->format('Ym') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ];
+
+        $callback = function () use ($calendarData) {
+            $stream = fopen('php://output', 'w');
+            stream_filter_prepend($stream, 'convert.iconv.utf-8/cp932//TRANSLIT');
+
+            fputcsv($stream, [
+                '日付',
+                '出勤',
+                '退勤',
+                '休憩',
+                '合計',
+            ]);
+
+            foreach ($calendarData as $dayData) {
+                if ($dayData['attendance']) {
+                    fputcsv($stream, [
+                        $dayData['date'],
+                        Carbon::parse($dayData['attendance']->start_time)->format('H:i'),
+                        $dayData['attendance']->end_time ? Carbon::parse($dayData['attendance']->end_time)->format('H:i') : '',
+                        $dayData['attendance']->total_rest_time,
+                        $dayData['attendance']->work_time ?? '',
+                    ]);
+                } else {
+                    fputcsv($stream, [
+                        $dayData['date'],
+                        '', // 出勤
+                        '', // 退勤
+                        '', // 休憩
+                        '', // 合計
+                    ]);
+                }
+            }
+
+            fclose($stream);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 }

@@ -7,12 +7,12 @@
 @endsection
 
 @section('content')
-<div class="attendance-list__content">
-    <div class="attendance-list__heading">
+<div class="staff-list__content">
+    <div class="staff-list__heading">
         <h1>スタッフ一覧</h1>
     </div>
 
-    <table class="attendance-table">
+    <table class="staff-table">
         <thead>
             <tr>
                 <th>名前</th>

@@ -20,7 +20,7 @@ input{
 
 .header {
     background-color: #000000;
-    padding: 20px 40px 20px 20px;
+    padding: 20px 38px 20px 20px;
 }
 
 .header__inner {
@@ -52,7 +52,11 @@ input{
 }
 
 .header-nav__item {
-    margin-left: 30px;
+    margin-left: 28px;
+    /* height: 29px; */
+}
+.header-nav__item form{
+    margin: -3px 0 0;
 }
 
 .header-nav__item:first-child {
@@ -96,10 +100,14 @@ input{
         margin-bottom: 10px;
         /* height: 36px; */
     }
-}
-
-@media (max-width: 850px) {
+        .header__inner nav{
+            width: 100%;
+        }
+    .header-nav{
+        /* width: 100%; */
+        margin: 0 30px;
+    }
     .form__error {
-    font-size: 14px;
+        font-size: 14px;
     }
 }

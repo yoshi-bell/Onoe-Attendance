@@ -27,33 +27,11 @@ class AttendanceCorrectionSeeder extends Seeder
             foreach ($attendances as $attendance) {
                 // 勤怠データごとに約10%の確率で修正申請を作成
                 if (rand(0, 9) === 0) {
-                    $requestedStartTime = Carbon::parse($attendance->start_time)->addMinutes(rand(-30, 30));
-                    $requestedEndTime = Carbon::parse($attendance->end_time)->addMinutes(rand(-30, 30));
-
-                    $status = rand(0, 1) ? 'pending' : 'approved'; // 承認待ちか承認済みをランダムに決定
-
-
-                    $correction = AttendanceCorrection::create([
-                        'attendance_id' => $attendance->id,
-                        'requester_id' => $user->id,
-
-                        'requested_start_time' => $requestedStartTime,
-                        'requested_end_time' => $requestedEndTime,
-                        'reason' => '遅延のため',
-                        'status' => $status,
-                        'created_at' => Carbon::parse($attendance->work_date)->addDay(),
-                    ]);
-
-                    // 休憩修正申請もランダムで作成
-                    if (rand(0, 1)) {
-                        $restStartTime = Carbon::parse($requestedStartTime)->addHours(rand(2, 4));
-                        $restEndTime = $restStartTime->copy()->addMinutes(rand(30, 60));
-                        RestCorrection::create([
-                            'attendance_correction_id' => $correction->id,
-                            'requested_start_time' => $restStartTime,
-                            'requested_end_time' => $restEndTime,
-                        ]);
-                    }
+                    AttendanceCorrection::factory()
+                        ->for($attendance)
+                        ->state(['requester_id' => $user->id])
+                        ->withRests(rand(0, 2))
+                        ->create();
                 }
             }
         }

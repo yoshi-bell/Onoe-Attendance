@@ -15,6 +15,11 @@ class Rest extends Model
         'end_time',
     ];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     /**
      * この休憩記録が紐づく勤怠記録を取得
      */

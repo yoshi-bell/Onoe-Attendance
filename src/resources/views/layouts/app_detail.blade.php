@@ -10,7 +10,9 @@
 
 @section('content')
 <div class="detail__container">
-    <h1 class="detail__heading">@yield('detail_title')</h1>
+    <div class="detail__heading">
+        <h1>@yield('detail_title')</h1>
+    </div>
 
     <div class="detail__card">
         <form class="detail__form" action="@yield('form_action')" method="POST" novalidate>

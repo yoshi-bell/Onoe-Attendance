@@ -58,6 +58,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [App\Http\Controllers\AdminLoginController::class, 'showLoginForm'])->name('login');
 
     Route::post('/login', [App\Http\Controllers\AdminLoginController::class, 'login']);
+
     Route::post('/logout', [App\Http\Controllers\AdminLoginController::class, 'logout'])->name('logout');
     });
 
@@ -65,19 +66,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->name('admin.')->group(function () {
     // 勤怠一覧ページのルート
     Route::get('/attendance/list', [App\Http\Controllers\AdminAttendanceController::class, 'index'])->name('attendance.index');
+
     //勤怠詳細ページのルート
     Route::get('/attendance/{attendance}', [App\Http\Controllers\AdminAttendanceController::class, 'show'])->name('attendance.show');
+
     Route::put('/attendance/{attendance}', [App\Http\Controllers\AdminAttendanceController::class, 'update'])->name('attendance.update');
 
     // 申請一覧ページのルート
     Route::get('/stamp_correction_request/list', [App\Http\Controllers\AdminCorrectionRequestController::class, 'index'])->name('corrections.index');
+
     // 修正申請承認ページのルート
     Route::get('/stamp_correction_request/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'show'])->name('corrections.approve.show');
+
     Route::post('/stamp_correction_request/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'approve'])->name('corrections.approve');
+
     // スタッフ一覧ページのルート
     Route::get('/staff/list', [App\Http\Controllers\AdminStaffController::class, 'index'])->name('staff.list');
 
     // スタッフ別勤怠一覧ページのルート
     Route::get('/attendance/staff/{user}', [App\Http\Controllers\AdminStaffController::class, 'showAttendance'])->name('attendance.staff.showAttendance');
+
+    // スタッフ別勤怠一覧のCSVエクスポート
+    Route::get('/attendance/staff/{user}/export-csv', [App\Http\Controllers\AdminStaffController::class, 'exportCsv'])->name('attendance.staff.exportCsv');
 });
 

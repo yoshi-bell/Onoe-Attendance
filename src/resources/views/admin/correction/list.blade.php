@@ -1,6 +1,6 @@
 @extends('layouts.app_correction_list')
 
-@section('list_title', '申請一覧（管理者）')
+@section('list_title', '申請一覧')
 
 @section('tabs')
     <a href="{{ route('admin.corrections.index', ['status' => 'pending']) }}" class="item-list__tab @if($status == 'pending') active @endif">承認待ち</a>

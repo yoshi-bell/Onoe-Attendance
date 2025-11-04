@@ -18,6 +18,11 @@ class AttendanceCorrection extends Model
         'status'
     ];
 
+    protected $casts = [
+        'requested_start_time' => 'datetime',
+        'requested_end_time' => 'datetime',
+    ];
+
     /**
      * この申請が紐づく勤怠記録を取得
      */

@@ -26,27 +26,16 @@ class AttendanceCorrectionRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'requested_start_time' => ['required', 'date_format:H:i'],
             'requested_end_time' => ['required', 'date_format:H:i', 'after:requested_start_time'],
             'reason' => ['required', 'string', 'max:400'],
             'rests' => ['present', 'array'],
 
-            // 「新規追加」の休憩フォーム
-            'rests.new.start_time' => ['nullable', 'required_with:rests.new.end_time', 'date_format:H:i', 'after:requested_start_time'],
-            'rests.new.end_time' => ['nullable', 'required_with:rests.new.start_time', 'date_format:H:i', 'after:rests.new.start_time', 'before:requested_end_time'],
+            // --- 休憩関連（新規・既存共通） ---
+            'rests.*.start_time' => ['nullable', 'required_with:rests.*.end_time', 'date_format:H:i', 'after:requested_start_time', 'before:requested_end_time'],
+            'rests.*.end_time' => ['nullable', 'required_with:rests.*.start_time', 'date_format:H:i', 'after:rests.*.start_time', 'before:requested_end_time'],
         ];
-
-        // 既存の休憩
-        $submittedRests = $this->input('rests', []);
-        foreach ($submittedRests as $key => $value) {
-            if (is_numeric($key)) {
-                $rules["rests.{$key}.start_time"] = ['required', 'date_format:H:i', 'after:requested_start_time'];
-                $rules["rests.{$key}.end_time"] = ['required', 'date_format:H:i', 'after:rests.'.$key.'.start_time', 'before:requested_end_time'];
-            }
-        }
-
-        return $rules;
     }
 
     /**
@@ -56,37 +45,20 @@ class AttendanceCorrectionRequest extends FormRequest
      */
     public function messages()
     {
-        $messages = [
-            'requested_start_time.required' => '出勤時間を入力してください。',
-            'requested_end_time.required' => '退勤時間を入力してください。',
-            'requested_end_time.after' => '出勤時間もしくは退勤時間が不適切な値です。',
-            'reason.required' => '備考を記入してください。',
-            // 新規追加フォーム用のメッセージ
-            'rests.new.start_time.required_with' => '休憩追加の開始時間を入力してください。',
-            'rests.new.end_time.required_with' => '休憩追加の終了時間を入力してください。',
-            'rests.new.end_time.after' => '休憩追加の時間が不適切です。',
-            'rests.new.start_time.after' => '休憩時間が不適切な値です。',
-            'rests.new.end_time.before' => '休憩時間もしくは退勤時間が不適切な値です。',
+        return [
+            'requested_start_time.required' => '出勤時間を入力してください',
+            'requested_end_time.required' => '退勤時間を入力してください',
+            'requested_end_time.after' => '出勤時間もしくは退勤時間が不適切な値です',
+            'reason.required' => '備考を記入してください',
+
+            // --- 休憩関連（新規・既存共通） ---
+            'rests.*.start_time.required_with' => '休憩の開始時間を入力してください',
+            'rests.*.end_time.required_with' => '休憩の終了時間を入力してください',
+            'rests.*.end_time.after' => '休憩の終了時間は、開始時間より後に設定してください',
+            'rests.*.start_time.after' => '休憩時間が不適切な値です',
+            'rests.*.start_time.before' => '休憩時間が不適切な値です',
+            'rests.*.end_time.before' => '休憩時間もしくは退勤時間が不適切な値です',
         ];
-
-        // 既存の休憩データを取得
-        $submittedRests = $this->input('rests', []);
-        if (isset($submittedRests['new'])) {
-            unset($submittedRests['new']);
-        }
-
-        foreach ($submittedRests as $key => $value) {
-            if (is_numeric($key)) {
-                // 既存の休憩用のメッセージ
-                $messages["rests.{$key}.start_time.required"] = '既存の休憩の開始時間は必須です。';
-                $messages["rests.{$key}.end_time.required"] = '既存の休憩の終了時間は必須です。';
-                $messages["rests.{$key}.end_time.after"] = '休憩の時間が不適切な値です。';
-                $messages["rests.{$key}.start_time.after"] = '休憩時間が不適切な値です。';
-                $messages["rests.{$key}.end_time.before"] = '休憩時間もしくは退勤時間が不適切な値です。';
-            }
-        }
-
-        return $messages;
     }
 
     /**

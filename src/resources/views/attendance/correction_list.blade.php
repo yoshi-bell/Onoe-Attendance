@@ -12,3 +12,5 @@
 @section('detail_link_route', 'attendance.detail')
 
 @section('detail_link_param_name', 'attendance')
+
+@section('detail_link_param_value_field', 'attendance.id')

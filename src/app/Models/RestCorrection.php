@@ -15,6 +15,11 @@ class RestCorrection extends Model
         'requested_end_time',
     ];
 
+    protected $casts = [
+        'requested_start_time' => 'datetime',
+        'requested_end_time' => 'datetime',
+    ];
+
     /**
      * この休憩修正が紐づく勤怠修正を取得
      */
