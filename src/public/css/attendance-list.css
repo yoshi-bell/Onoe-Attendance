@@ -2,13 +2,14 @@
     max-width: 900px;
     margin: 48px auto;
 }
-.attendance-list__heading h1 {
+
+.attendance-list__title {
     color: #000000;
     font-size: 30px;
     font-weight: bold;
     border-left: 8px solid #000000 ;
     padding-left: 24px;
-    margin: 0 0 30px 0;
+    margin: 0;
 }
 
 .date-navigation {
@@ -56,7 +57,6 @@
     letter-spacing: 3px;
     text-align: center;
     color: #737373;
-
 }
 
 .attendance-table thead{
@@ -66,10 +66,6 @@
 .attendance-table tr {
     height: 45px;
     border-bottom: 2px solid #E1E1E1;
-}
-
-.attendance-table tr:first-child {
-    /* border-bottom: 2px solid #E1E1E1; */
 }
 
 .attendance-table tr:last-child {
@@ -97,7 +93,6 @@
 }
 
 .attendance-date__input {
-    /* display: none; */
     max-width: 126px;
     font-family: 'Inter', sans-serif;
     border: none;
@@ -107,10 +102,7 @@
 
 .csv-export-button-wrapper{
     text-align: right;
-    /* display: flex; */
-    /* justify-content: end; */
-    /* align-items: center; */
-    margin-top: 60px;
+    margin-top: 55px;
 }
 
     .csv-export-button {
@@ -122,7 +114,6 @@
     background-color: #000000;
     color: white;
     border: none;
-    /* padding: 10px; */
     border-radius: 5px;
     font-size: 22px;
     font-weight: bold;
@@ -130,25 +121,24 @@
     transition: background-color 0.3s;
 }
 
+
 .csv-export-button:hover {
-    background-color: #6c757d;}
+    background-color: #6c757d;
+}
 
 @media (max-width: 950px) {
     .attendance-list__content{
         margin: 12px auto;
     }
 
-.attendance-table {
-    letter-spacing: 1px;
-}
-    .attendance-list__heading h1{
-        /* margin-bottom: 30px; */
+    .attendance-table {
+        letter-spacing: 1px;
     }
 }
 
 @media (max-width: 850px){
     .date-navigation{
-        margin: 15px 0 25px;
+        margin: 30px 0 25px;
     }
 
     .attendance-table th:first-child,
@@ -161,5 +151,8 @@
     .attendance-table th:last-child,
     .attendance-table td:last-child {
         padding-right: 10px;
+    }
+    .csv-export-button-wrapper {
+        margin-top: 30px;
     }
 }

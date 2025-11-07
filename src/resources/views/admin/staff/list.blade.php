@@ -9,8 +9,10 @@
 @section('content')
 <div class="staff-list__content">
     <div class="staff-list__heading">
-        <h1>スタッフ一覧</h1>
+        <h1 class="staff-list__title">スタッフ一覧</h1>
     </div>
+
+    <div class="staff-list__pagination">{{ $staffs->links() }}</div>
 
     <table class="staff-table">
         <thead>

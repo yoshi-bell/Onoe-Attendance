@@ -15,8 +15,7 @@ class AdminStaffController extends Controller
      */
     public function index()
     {
-        $staffs = User::where('is_admin', false)->orderBy('name')->get();
-
+        $staffs = User::where('is_admin', false)->orderBy('id', 'asc')->paginate(20);
         return view('admin.staff.list', compact('staffs'));
     }
 
@@ -26,10 +25,10 @@ class AdminStaffController extends Controller
     public function showAttendance(Request $request, User $user)
     {
         $today = Carbon::today();
-        $month = $request->input('month', Carbon::now()->format('Y/m'));
-        $currentDate = Carbon::createFromFormat('Y/m', $month)->startOfMonth();
-        $prevMonth = $currentDate->copy()->subMonth()->format('Y/m');
-        $nextMonth = $currentDate->copy()->addMonth()->format('Y/m');
+        $month = $request->input('month', Carbon::now()->format('Y-m'));
+        $currentDate = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
+        $prevMonth = $currentDate->copy()->subMonth()->format('Y-m');
+        $nextMonth = $currentDate->copy()->addMonth()->format('Y-m');
 
         $calendarData = $this->getAttendanceData($user, $currentDate);
 

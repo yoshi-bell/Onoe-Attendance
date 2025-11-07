@@ -8,7 +8,6 @@ use App\Models\AttendanceCorrection;
 use App\Models\Attendance;
 use App\Models\Rest;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class AdminCorrectionRequestController extends Controller
 {
@@ -16,8 +15,8 @@ class AdminCorrectionRequestController extends Controller
     {
         $status = $request->get('status', 'pending');
 
-        $query = AttendanceCorrection::with('requester', 'attendance.user') // 申請者と勤怠ユーザー情報をEager Load
-            ->orderBy('created_at', 'desc');
+        $query = AttendanceCorrection::with('requester', 'attendance.user')
+            ->orderBy('created_at', 'asc');
 
         if ($status === 'pending') {
             $query->where('status', 'pending');
@@ -51,13 +50,11 @@ class AdminCorrectionRequestController extends Controller
         }
 
         DB::transaction(function () use ($attendanceCorrection) {
-            // 勤怠修正を適用
             $attendance = $attendanceCorrection->attendance;
             $attendance->start_time = $attendanceCorrection->requested_start_time;
             $attendance->end_time = $attendanceCorrection->requested_end_time;
             $attendance->save();
 
-            // 既存の休憩を削除し、修正後の休憩を適用
             $attendance->rests()->delete(); // 既存の休憩を全て削除
             foreach ($attendanceCorrection->restCorrections as $restCorrection) {
                 Rest::create([
@@ -67,9 +64,7 @@ class AdminCorrectionRequestController extends Controller
                 ]);
             }
 
-            // 申請ステータスを承認済みに更新
             $attendanceCorrection->status = 'approved';
-            // approver_id は削除済みのため、この行は不要
             $attendanceCorrection->save();
         });
 

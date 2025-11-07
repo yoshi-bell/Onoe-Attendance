@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 use Carbon\Carbon;
 
@@ -15,8 +16,10 @@ class AttendanceCorrectionRequest extends FormRequest
      */
     public function authorize()
     {
-        // TODO: 自分の勤怠記録であることなどをチェックする認可ロジックを後で実装
-        return true;
+        $attendance = $this->route('attendance');
+
+        // 管理者、または勤怠記録の所有者である場合に許可
+        return Auth::user()->is_admin || Auth::id() === $attendance->user_id;
     }
 
     /**
@@ -73,7 +76,6 @@ class AttendanceCorrectionRequest extends FormRequest
             $rests = $this->input('rests', []);
             $intervals = [];
 
-            // 全ての休憩時間を収集
             foreach ($rests as $key => $rest) {
                 if (!empty($rest['start_time']) && !empty($rest['end_time'])) {
                     $intervals[] = [
@@ -88,12 +90,10 @@ class AttendanceCorrectionRequest extends FormRequest
                 return;
             }
 
-            // 開始時間でソート
             usort($intervals, function ($a, $b) {
                 return $a['start'] <=> $b['start'];
             });
 
-            // 重複をチェック
             for ($i = 0; $i < count($intervals) - 1; $i++) {
                 if ($intervals[$i]['end']->gt($intervals[$i + 1]['start'])) {
                     $key1 = $intervals[$i]['key'];

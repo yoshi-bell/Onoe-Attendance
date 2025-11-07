@@ -11,7 +11,7 @@
 @section('content')
     <div class="correction-list__content">
         <div class="correction-list__heading">
-            <h1>@yield('list_title')</h1>
+            <h1 class="correction-list__title">@yield('list_title')</h1>
         </div>
 
         <div class="item-list__tabs">
@@ -21,7 +21,7 @@
         <table class="correction-table">
             <thead>
                 <tr>
-                    <th>状態</th>
+                    <th class="correction-table__heading">状態</th>
                     <th>名前</th>
                     <th>対象日時</th>
                     <th>申請理由</th>

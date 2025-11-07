@@ -29,10 +29,6 @@ main {
     letter-spacing: 2px;
 }
 
-.datetime-panel {
-    /* margin-bottom: 30px; */
-}
-
 .date-display {
     font-size: 40px;
     margin: 0;
@@ -80,10 +76,7 @@ main {
 .timestamp-button--rest {
     background-color: #ffffff;
     color: #000000;
-    /* border: 1px solid #000000; */
 }
-
-
 
 .timestamp-button--rest:hover {
     background-color: #c3fff2;
@@ -93,7 +86,6 @@ main {
     padding: 60px 20px;
     font-size: 26px;
     font-weight: bold;
-    /* background-color: #fff; */
     border-radius: 5px;
     height: 120px;
     display: flex;

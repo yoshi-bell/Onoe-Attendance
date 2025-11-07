@@ -11,7 +11,8 @@
 @section('content')
 <div class="attendance-list__content">
     <div class="attendance-list__heading">
-        <h1>{{ $date->format('Y年n月j日') }}の勤怠</h1>
+        <h1 class="attendance-list__title">{{ $date->format('Y年n月j日') }}の勤怠</>
+        </h1>
     </div>
 
     <div class="date-navigation">
@@ -23,6 +24,7 @@
         <a class="date-nav-button" href="{{ route('admin.attendance.index', ['date' => $nextDate]) }}">翌日<i class="fa-solid fa-arrow-right"></i></a>
     </div>
 
+    {{ $attendances->withQueryString()->links() }}
     <table class="attendance-table">
         <thead>
             <tr>
@@ -36,29 +38,30 @@
         </thead>
         <tbody>
             @foreach ($attendances as $attendance)
-                <tr>
-                    <td>{{ $attendance->user->name }}</td>
-                    <td>{{ \Carbon\Carbon::parse($attendance->start_time)->format('H:i') }}</td>
-                    <td>{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '' }}</td>
-                    <td>{{ $attendance->total_rest_time ?? '0:00' }}</td>
-                    <td>{{ $attendance->work_time ?? '' }}</td>
-                    <td>
-                        @if (\Carbon\Carbon::parse($attendance->work_date)->isBefore($today))
-                            <a href="{{ route('admin.attendance.show', ['attendance' => $attendance->id]) }}">詳細</a>
-                        @else
-                            詳細
-                        @endif
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ $attendance->user->name }}</td>
+                <td>{{ \Carbon\Carbon::parse($attendance->start_time)->format('H:i') }}</td>
+                <td>{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '' }}</td>
+                <td>{{ $attendance->total_rest_time ?? '0:00' }}</td>
+                <td>{{ $attendance->work_time ?? '' }}</td>
+                <td>
+                    @if (\Carbon\Carbon::parse($attendance->work_date)->isBefore($today))
+                    <a href="{{ route('admin.attendance.show', ['attendance' => $attendance->id]) }}">詳細</a>
+                    @else
+                    詳細
+                    @endif
+                </td>
+            </tr>
             @endforeach
         </tbody>
     </table>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const dateDisplayTrigger = document.getElementById('dateDisplayTrigger');
         const datePickerInput = document.getElementById('datePicker');
 
@@ -68,13 +71,18 @@
             defaultDate: datePickerInput.value, // 初期日付
             allowInput: false, // ユーザーによる直接入力は許可しない
             onChange: function(selectedDates, dateStr, instance) {
-                if (dateStr) {
-                    window.location.href = `{{ route('admin.attendance.index') }}?date=${dateStr}`;
+                if (selectedDates.length > 0) {
+                    const year = selectedDates[0].getFullYear();
+                    const month = ('0' + (selectedDates[0].getMonth() + 1)).slice(-2);
+                    const day = ('0' + selectedDates[0].getDate()).slice(-2);
+                    const urlDateStr = `${year}-${month}-${day}`;
+
+                    window.location.href = `{{ route('admin.attendance.index') }}?date=${urlDateStr}`;
                 }
             }
         });
 
-        dateDisplayTrigger.addEventListener('click', function () {
+        dateDisplayTrigger.addEventListener('click', function() {
             fp.open(); // Flatpickrのカレンダーを開く
         });
     });

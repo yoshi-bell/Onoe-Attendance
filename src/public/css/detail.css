@@ -3,17 +3,17 @@
     margin: 50px auto 10px;
 }
 
-.detail__heading h1 {
+.detail__heading {
+    margin-bottom: 52px;
+}
+
+.detail__title {
     color: #000000;
     font-size: 30px;
     font-weight: bold;
     border-left: 8px solid #000000;
     padding-left: 22px;
     margin: 0;
-}
-
-.detail__heading {
-    margin-bottom: 52px;
 }
 
 .detail__form{
@@ -55,10 +55,6 @@
 
 }
 
-.detail__text {
-    /* margin: 0 10px; */
-}
-
 .detail__input,
 .detail__textarea {
     font-family: 'Inter',sans-serif;
@@ -75,13 +71,8 @@
 .detail__textarea {
     font-size: 14px;
     width: 330px;
-    /* width: 42%; */
     height: 72px;
     resize: vertical;
-}
-
-.detail__form-group--rest {
-    /* justify-content: flex-start; */
 }
 
 .detail__text--name{
@@ -89,15 +80,13 @@
 }
 
 .detail__text--date{
-    /* width: 40%; */
     display: flex;
     letter-spacing: 2px;
-    /* justify-content: space-between; */
     gap: 116px;
 }
 
-.detail__text--date span{
-    /* margin: 0 30px; */
+.detail__date-year,
+.detail__date-monthday {
     width: 103px;
     text-align: center;
 }
@@ -116,6 +105,7 @@
 
 .detail__text--reason {
     font-size: 14px;
+    margin-left: 26px;
 }
 
 .detail__separator {
@@ -133,8 +123,6 @@
     background-color: #000000;
     color: white;
     border: none;
-    /* padding: 10px 20px; */
-    /* margin-top: 25px; */
     border-radius: 5px;
     font-size: 22px;
     font-weight: bold;
@@ -158,21 +146,20 @@
     align-items: center;
 }
 
-.detail__pending-message{
+.detail__pending-message,
+.alert-success{
     font-size: 18px;
     color: #FF0000;
     opacity: 0.5;
 }
-
-.detail__text--reason{
-    margin-left: 26px;
+.alert-success{
+    text-align: right;
+    margin-right: 15px;
 }
+
 @media (max-width: 950px) {
     .detail__container {
         margin: 14px auto 10px;
-    }
-    .attendance-list__heading h1 {
-        /* margin-bottom: 30px; */
     }
 }
 

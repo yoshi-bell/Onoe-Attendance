@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
@@ -69,7 +68,7 @@ class AdminAttendanceDetailTest extends TestCase
         $invalidData = [
             'requested_start_time' => '18:00',
             'requested_end_time' => '09:00',
-            'reason' => 'テスト理由', // このテストでは理由は必須ではないが念のため
+            'reason' => 'テスト理由',
         ];
 
         $response = $this->put(route('admin.attendance.update', ['attendance' => $attendance->id]), $invalidData);

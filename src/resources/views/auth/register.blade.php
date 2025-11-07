@@ -9,7 +9,7 @@
 @section('content')
 <div class="register-form__content">
     <div class="register-form__heading">
-        <h1>会員登録</h1>
+        <h1 class="register-form__title">会員登録</h1>
     </div>
     <form class="form" action="{{ route('register') }}" method="post" novalidate>
         @csrf
@@ -19,7 +19,7 @@
             </div>
             <div class="form__group-content">
                 <div class="form__input--text">
-                    <input type="text" name="name" value="{{ old('name') }}" />
+                    <input type="text" name="name" value="{{ old('name') }}" class="form__input" />
                 </div>
                 <div class="form__error">
                     @error('name')
@@ -34,7 +34,7 @@
             </div>
             <div class="form__group-content">
                 <div class="form__input--text">
-                    <input type="email" name="email" value="{{ old('email') }}" />
+                    <input type="email" name="email" value="{{ old('email') }}" class="form__input" />
                 </div>
                 <div class="form__error">
                     @error('email')
@@ -49,7 +49,7 @@
             </div>
             <div class="form__group-content">
                 <div class="form__input--text">
-                    <input type="password" name="password" />
+                    <input type="password" name="password" class="form__input" />
                 </div>
                 <div class="form__error">
                     @error('password')
@@ -64,7 +64,7 @@
             </div>
             <div class="form__group-content">
                 <div class="form__input--text">
-                    <input type="password" name="password_confirmation" />
+                    <input type="password" name="password_confirmation" class="form__input" />
                 </div>
             </div>
         </div>

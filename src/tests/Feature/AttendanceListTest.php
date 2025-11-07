@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
@@ -110,7 +109,7 @@ class AttendanceListTest extends TestCase
         Rest::factory()->create(['attendance_id' => $prevMonthAttendance->id]);
         $prevMonthAttendance->refresh();
 
-        $prevMonth = Carbon::today()->subMonth()->format('Y/m');
+        $prevMonth = Carbon::today()->subMonth()->format('Y-m');
         $response = $this->get('/attendance/list?month=' . $prevMonth);
 
         $response->assertStatus(200);
@@ -118,7 +117,7 @@ class AttendanceListTest extends TestCase
         $response->assertSee($prevMonthAttendance->end_time->format('H:i'));
         $response->assertSee($prevMonthAttendance->total_rest_time);
         $response->assertSee($prevMonthAttendance->work_time);
-        $response->assertSee('value="' . $prevMonth . '"', false);
+        $response->assertSee('value="' . Carbon::today()->subMonth()->format('Y/m') . '"', false);
     }
 
     /**
@@ -144,7 +143,7 @@ class AttendanceListTest extends TestCase
         Rest::factory()->create(['attendance_id' => $nextMonthAttendance->id]);
         $nextMonthAttendance->refresh();
 
-        $nextMonth = Carbon::today()->addMonth()->format('Y/m');
+        $nextMonth = Carbon::today()->addMonth()->format('Y-m');
         $response = $this->get('/attendance/list?month=' . $nextMonth);
 
         $response->assertStatus(200);
@@ -152,7 +151,7 @@ class AttendanceListTest extends TestCase
         $response->assertSee($nextMonthAttendance->end_time->format('H:i'));
         $response->assertSee($nextMonthAttendance->total_rest_time);
         $response->assertSee($nextMonthAttendance->work_time);
-        $response->assertSee('value="' . $nextMonth . '"', false);
+        $response->assertSee('value="' . Carbon::today()->addMonth()->format('Y/m') . '"', false);
     }
 
     /**

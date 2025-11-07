@@ -16,43 +16,37 @@
 <body>
     <header class="header">
         <div class="header__inner">
-            <a class="header__logo" href="/">
-                {{-- ロゴを画像に変更 --}}
-                <img src="{{ asset('images/logo.svg') }}" alt="Atte">
-            </a>
-
-            {{-- ↓↓ ログインしている時だけナビゲーションを表示 ↓↓ --}}
-            @if (Auth::check() && ( (Auth::user()->hasVerifiedEmail() && !Auth::user()->is_admin) || Auth::user()->is_admin) )
-            <nav>
-                <ul class="header-nav">
-                    @if(Auth::user()->is_admin)
-                        {{-- 管理者用ヘッダー --}}
-                        <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.attendance.index') }}">勤怠一覧</a></li>
-                        <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a></li>
-                        <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.corrections.index') }}">申請一覧</a></li>
-                        <li class="header-nav__item">
-                            <form action="{{ route('admin.logout') }}" method="post" novalidate>
-                                @csrf
-                                <button class="header-nav__button">ログアウト</button>
-                            </form>
-                        </li>
-                    @else
-                        {{-- 一般ユーザー用ヘッダー --}}
-                        <li class="header-nav__item"><a class="header-nav__link" href="/attendance">勤怠</a></li>
-                        <li class="header-nav__item"><a class="header-nav__link" href="/attendance/list">勤怠一覧</a></li>
-                        <li class="header-nav__item"><a class="header-nav__link" href="{{ route('corrections.index') }}">申請一覧</a></li>
-                        <li class="header-nav__item">
-                            <form action="{{ route('logout') }}" method="post" novalidate>
-                                @csrf
-                                <button class="header-nav__button">ログアウト</button>
-                            </form>
-                        </li>
-                    @endif
-                </ul>
-            </nav>
-            @endif
-            {{-- ↑↑ ここまでがログイン時のみ表示されるナビゲーション ↑↑ --}}
-        </div>
+                        <a class="header__logo" href="/">
+                            <img src="{{ asset('images/logo.svg') }}" alt="Atte">
+                        </a>
+                        @if (Auth::check() && ( (Auth::user()->hasVerifiedEmail() && !Auth::user()->is_admin) || Auth::user()->is_admin) )
+                        <nav>
+                            <ul class="header-nav">
+                                @if(Auth::user()->is_admin)
+                                    <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.attendance.index') }}">勤怠一覧</a></li>
+                                    <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.staff.list') }}">スタッフ一覧</a></li>
+                                    <li class="header-nav__item"><a class="header-nav__link" href="{{ route('admin.corrections.index') }}">申請一覧</a></li>
+                                    <li class="header-nav__item">
+                                        <form action="{{ route('admin.logout') }}" method="post" novalidate>
+                                            @csrf
+                                            <button class="header-nav__button">ログアウト</button>
+                                        </form>
+                                    </li>
+                                @else
+                                    <li class="header-nav__item"><a class="header-nav__link" href="/attendance">勤怠</a></li>
+                                    <li class="header-nav__item"><a class="header-nav__link" href="/attendance/list">勤怠一覧</a></li>
+                                    <li class="header-nav__item"><a class="header-nav__link" href="{{ route('corrections.index') }}">申請一覧</a></li>
+                                    <li class="header-nav__item">
+                                        <form action="{{ route('logout') }}" method="post" novalidate>
+                                            @csrf
+                                            <button class="header-nav__button">ログアウト</button>
+                                        </form>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
+                        @endif
+                    </div>
     </header>
 
     <main>

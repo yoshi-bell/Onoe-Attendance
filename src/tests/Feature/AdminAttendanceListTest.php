@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
@@ -92,6 +91,7 @@ class AdminAttendanceListTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee(Carbon::today()->format('Y年n月j日'));
+        $response->assertSee('value="' . Carbon::today()->format('Y/m/d') . '"', false);
     }
 
     /**

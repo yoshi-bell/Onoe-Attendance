@@ -9,7 +9,6 @@
 @section('content')
 <div class="attendance-container">
     <div class="status-header">
-        {{-- ステータス表示 --}}
         <p class="status-text">{{ $statusText }}</p>
     </div>
 
@@ -24,7 +23,6 @@
     </div>
     @else
     <div class="timestamp-container">
-        {{-- 勤務開始ボタン --}}
         @if(!$isWorking)
         <form class="timestamp-form" action="{{ route('attendance.start') }}" method="post" novalidate>
             @csrf
@@ -32,7 +30,6 @@
         </form>
         @endif
 
-        {{-- 勤務終了ボタン と 休憩開始ボタン --}}
         @if($isWorking && !$isOnBreak)
         <form class="timestamp-form" action="{{ route('attendance.end') }}" method="post" novalidate>
             @csrf
@@ -44,7 +41,6 @@
         </form>
         @endif
 
-        {{-- 休憩終了ボタン --}}
         @if($isWorking && $isOnBreak)
         <form class="timestamp-form" action="{{ route('rest.end') }}" method="post" novalidate>
             @csrf

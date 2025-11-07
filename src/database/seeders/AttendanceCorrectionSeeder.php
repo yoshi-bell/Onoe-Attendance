@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceCorrection;
-use App\Models\RestCorrection;
 use Carbon\Carbon;
 
 class AttendanceCorrectionSeeder extends Seeder
@@ -21,8 +20,9 @@ class AttendanceCorrectionSeeder extends Seeder
         $users = User::where('is_admin', false)->get();
 
         foreach ($users as $user) {
-            // 各ユーザーの勤怠データを取得
-            $attendances = Attendance::where('user_id', $user->id)->get();
+            $attendances = Attendance::where('user_id', $user->id)
+                ->where('work_date', '>=', Carbon::now()->subMonth()->startOfMonth())
+                ->get();
 
             foreach ($attendances as $attendance) {
                 // 勤怠データごとに約10%の確率で修正申請を作成

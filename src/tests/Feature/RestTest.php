@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
@@ -29,7 +28,7 @@ class RestTest extends TestCase
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
+            'work_date' => Carbon::today(), // 固定された「今日」
             'start_time' => Carbon::now()->subHour(), // 09:00:00
             'end_time' => null,
         ]);
@@ -57,13 +56,14 @@ class RestTest extends TestCase
      */
     public function 休憩は一日に何回でもできる()
     {
+        Carbon::setTestNow(Carbon::create(2025, 11, 3, 9, 0, 0));
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
-            'start_time' => Carbon::create(2025, 11, 3, 9, 0, 0),
+            'work_date' => Carbon::today(), // 固定された「今日」
+            'start_time' => Carbon::now(),
             'end_time' => null,
         ]);
 
@@ -89,19 +89,21 @@ class RestTest extends TestCase
      */
     public function 休憩戻ボタンが正しく機能する()
     {
+        Carbon::setTestNow(Carbon::create(2025, 11, 3, 9, 0, 0));
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
-            'start_time' => Carbon::create(2025, 11, 3, 9, 0, 0),
+            'work_date' => Carbon::today(), // 固定された「今日」
+            'start_time' => Carbon::now(),
             'end_time' => null,
         ]);
 
+        Carbon::setTestNow(Carbon::create(2025, 11, 3, 12, 0, 0));
         $rest = Rest::factory()->create([
             'attendance_id' => $attendance->id,
-            'start_time' => Carbon::create(2025, 11, 3, 12, 0, 0),
+            'start_time' => Carbon::now(),
             'end_time' => null,
         ]);
 
@@ -128,13 +130,14 @@ class RestTest extends TestCase
      */
     public function 休憩戻は一日に何回でもできる()
     {
+        Carbon::setTestNow(Carbon::create(2025, 11, 3, 9, 0, 0));
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
-            'work_date' => Carbon::today(),
-            'start_time' => Carbon::create(2025, 11, 3, 9, 0, 0),
+            'work_date' => Carbon::today(), // 固定された「今日」
+            'start_time' => Carbon::now(),
             'end_time' => null,
         ]);
 

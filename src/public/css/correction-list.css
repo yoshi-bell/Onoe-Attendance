@@ -3,14 +3,17 @@
     margin: 36px auto;
 }
 
+.correction-list__heading {
+    margin: 0 0 30px 0;
+}
 
-.correction-list__heading h1 {
+.correction-list__title {
     color: #000000;
     font-size: 30px;
     font-weight: bold;
     border-left: 8px solid #000000;
     padding-left: 24px;
-    margin: 0 0 30px 0;
+    margin: 0;
 }
 
 .correction-table {
@@ -24,9 +27,20 @@
     color: #737373;
     text-align: left;
 }
+
+.correction-table__heading{
+    /* text-align: center; */
+}
+
 .correction-table thead {
     border-bottom: 3px solid #E1E1E1;
 }
+
+.correction-table thead th:first-child{
+    /* text-align: center; */
+    padding-left: 50px;
+}
+
 .correction-table tr {
     height: 45px;
     border-bottom: 2px solid #E1E1E1;
@@ -43,7 +57,6 @@
 
 .correction-table th:first-child,
 .correction-table td:first-child {
-    /* width: 15%; */
     padding-left: 35px;
 }
 
@@ -51,7 +64,6 @@
 .correction-table td:nth-child(2) {
     width: 12%;
     white-space: nowrap;
-    /* font-size: clamp(14px,1vw+5px,16px); */
 }
 
 .correction-table th:nth-child(4),
@@ -67,7 +79,6 @@
 .correction-table th:last-child,
 .correction-table td:last-child {
     width: 9%;
-    /* padding: 0 45px 0 15px; */
 }
 
 .correction-table td:last-child {
@@ -100,6 +111,7 @@
     color: #000000;
     font-weight: bold;
 }
+
 @media (max-width: 950px) {
     .correction-list__content {
         margin: 0 auto;
@@ -109,14 +121,15 @@
 
 @media (max-width: 850px) {
 
-    .correction-table{
-        /* letter-spacing: 1px; */
-    }
-
     .correction-table th,
     .correction-table td {
         width: 13%;
     }
+
+    .correction-table thead th:first-child{
+        padding-left: 35px;
+    }
+
 
     .correction-table th:first-child,
     .correction-table td:first-child {
@@ -124,15 +137,9 @@
         padding-left: 26px;
     }
 
-    .correction-table th:nth-child(2),
-    .correction-table td:nth-child(2) {
-        /* width: 11%; */
-    }
-
     .correction-table th:last-child,
     .correction-table td:last-child {
         width: 7%;
-        /* padding: 0 45px 0 15px; */
     }
 
     .correction-table {

@@ -1,4 +1,4 @@
-# 勤怠管理システム (Onoe-Attendance)
+# Onoe-Attendance
 
 シンプルさを追求した勤怠管理アプリケーションです。
 
@@ -12,16 +12,18 @@
 
 ```bash
 # リポジトリをクローン
-git clone <リポジトリのURL>
+git clone git@github.com:yoshi-bell/Onoe-Attendance.git
 
 # プロジェクトディレクトリに移動
 cd Onoe-Attendance
 
 # Dockerコンテナをビルドしてバックグラウンドで起動
 docker-compose up -d --build
+
+※MySQLは、OSによって起動しない場合があるのでそれぞれのPCに合わせて`docker-compose.yml`ファイルを編集してください。
 ```
 
-### 2. Laravelアプリケーションのセットアップ
+### 2. Laravel環境構築
 
 ```bash
 # PHPコンテナに入る
@@ -41,10 +43,17 @@ php artisan key:generate
 # データベースのマイグレーションと初期データ投入
 php artisan migrate:fresh --seed
 
+※シーディングにより、管理者ユーザー1件、一般ユーザー5件のダミーデータがデータベースに入力されます。
+
 #（任意）storageディレクトリの権限設定
 "The stream or file could not be opened"エラーが発生した場合に実行し権限を変更します。
 chmod -R 777 storage
+
 "注意": "777"は全てのユーザーに読み書き実行を許可する最も緩い権限設定です。これはローカル開発環境での権限問題を簡易的に解決するためのもので、本番環境では使用しないでください。
+
+# Dockerを再ビルドし.envファイルの変更を反映
+docker-compose down
+docker-compose up -d
 ```
 
 セットアップ完了後、 `http://localhost` でアプリケーションにアクセスできます。
@@ -64,8 +73,8 @@ chmod -R 777 storage
     - **管理者:** 全ユーザーの勤怠状況を日別一覧で確認できます。 選択した特定スタッフスタッフの月別勤怠記録の閲覧もできます。
 
 - **勤怠修正機能**
-    - **一般ユーザー:** 過去の勤怠記録に対して修正申請を送信できます。
-    - **管理者:** ユーザーからの修正申請を一覧で確認し、承認または却下できます。管理者が直接勤怠記録を編集することも可能です。
+    - **一般ユーザー:** 過去の勤怠記録に対して勤怠詳細画面を表示でき、そこから修正申請を送信できます。
+    - **管理者:** ユーザーからの修正申請を一覧で確認し、承認または却下できます。いパンユーザーと同じように過去の勤怠記録に対して勤怠詳細画面を表示でき、管理者はそこから直接編集することも可能です。
 
 - **スタッフ管理機能 (管理者)**
     - 登録されている全一般ユーザーの情報を一覧で確認できます。
@@ -84,7 +93,14 @@ chmod -R 777 storage
 ![ER図](ER.drawio.png)
 
 ## URL一覧
-- **アプリケーション:** `http://localhost/`
+- **アプリケーション (トップ):** `http://localhost/`
+- **会員登録:** `http://localhost/register`
+- **ログイン:** `http://localhost/login`
+- **勤怠打刻 (ユーザー):** `http://localhost/attendance`
+- **勤怠一覧 (ユーザー):** `http://localhost/attendance/list`
+- **管理者ログイン:** `http://localhost/admin/login`
+- **勤怠一覧 (管理者):** `http://localhost/admin/attendance/list`
+- **スタッフ一覧 (管理者):** `http://localhost/admin/staff/list`
 - **phpMyAdmin:** `http://localhost:8080/`
 - **MailHog (テスト用メール受信箱):** `http://localhost:8025/`
 
@@ -93,12 +109,21 @@ chmod -R 777 storage
 シーディングにより、以下のテスト用アカウントが作成されます。
 
 - **管理者ユーザー**
-  - **メールアドレス:** `admin@example.com`
-  - **パスワード:** `adminpass`
+  - **メールアドレス:**
+     - `admin@example.com`
+  - **パスワード:**
+     - `adminpass`
 
-- **一般ユーザー (例)**
-  - **メールアドレス:** `test1@example.com`
-  - **パスワード:** `usertest`
+- **一般ユーザー 5名**
+ > ※件数の変更があるかも,確認後修正
+  - **メールアドレス:**
+    - `test1@example.com`
+    - `test2@example.com`
+    - `test3@example.com`
+    - `test4@example.com`
+    - `test5@example.com`
+  - **一般ユーザー共通パスワード:**
+    - `usertest`
 
 ## テスト
 

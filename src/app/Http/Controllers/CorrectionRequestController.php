@@ -15,7 +15,7 @@ class CorrectionRequestController extends Controller
 
         $query = AttendanceCorrection::where('requester_id', $user->id)
             ->with('attendance.user')
-            ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'asc');
 
         if ($status === 'pending') {
             $query->where('status', 'pending');

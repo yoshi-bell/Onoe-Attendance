@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
@@ -26,16 +25,31 @@ class AdminStaffListTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $this->actingAs($admin);
 
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->create();
+        // ページネーションをテストするために21人のユーザーを作成
+        $users = User::factory()->count(21)->create();
 
+        // 1ページ目にアクセス
         $response = $this->get(route('admin.staff.list'));
 
         $response->assertStatus(200);
-        $response->assertSee($user1->name);
-        $response->assertSee($user1->email);
-        $response->assertSee($user2->name);
-        $response->assertSee($user2->email);
+        $response->assertSee('pagination'); // ページネーションが表示されていることを確認
+
+        // 1ページ目に最初の20人のユーザーが表示されていることを確認
+        foreach ($users->take(20) as $user) {
+            $response->assertSee($user->name);
+            $response->assertSee($user->email);
+        }
+
+        // 1ページ目に21人目のユーザーが表示されていないことを確認
+        $response->assertDontSee($users->last()->name);
+
+        // 2ページ目にアクセス
+        $responsePage2 = $this->get(route('admin.staff.list', ['page' => 2]));
+        $responsePage2->assertStatus(200);
+
+        // 2ページ目に21人目のユーザーが表示されていることを確認
+        $responsePage2->assertSee($users->last()->name);
+        $responsePage2->assertSee($users->last()->email);
     }
 
     /**
@@ -105,7 +119,7 @@ class AdminStaffListTest extends TestCase
         ]);
         $prevMonthAttendance->refresh();
 
-        $prevMonth = Carbon::today()->subMonth()->format('Y/m');
+        $prevMonth = Carbon::today()->subMonth()->format('Y-m');
         $response = $this->get(route('admin.attendance.staff.showAttendance', ['user' => $user->id, 'month' => $prevMonth]));
 
         $response->assertStatus(200);
@@ -114,7 +128,7 @@ class AdminStaffListTest extends TestCase
         $response->assertSee($prevMonthAttendance->end_time->format('H:i'));
         $response->assertSee($prevMonthAttendance->total_rest_time);
         $response->assertSee($prevMonthAttendance->work_time);
-        $response->assertSee('value="' . $prevMonth . '"', false);
+        $response->assertSee('value="' . Carbon::today()->subMonth()->format('Y/m') . '"', false);
     }
 
     /**
@@ -145,7 +159,7 @@ class AdminStaffListTest extends TestCase
         ]);
         $nextMonthAttendance->refresh();
 
-        $nextMonth = Carbon::today()->addMonth()->format('Y/m');
+        $nextMonth = Carbon::today()->addMonth()->format('Y-m');
         $response = $this->get(route('admin.attendance.staff.showAttendance', ['user' => $user->id, 'month' => $nextMonth]));
 
         $response->assertStatus(200);
@@ -154,7 +168,7 @@ class AdminStaffListTest extends TestCase
         $response->assertSee($nextMonthAttendance->end_time->format('H:i'));
         $response->assertSee($nextMonthAttendance->total_rest_time);
         $response->assertSee($nextMonthAttendance->work_time);
-        $response->assertSee('value="' . $nextMonth . '"', false);
+        $response->assertSee('value="' . Carbon::today()->addMonth()->format('Y/m') . '"', false);
     }
 
     /**

@@ -3,11 +3,10 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
-use App\Models\AttendanceCorrection; // 追加
+use App\Models\AttendanceCorrection;
 use Carbon\Carbon;
 
 class AttendanceCorrectionTest extends TestCase
@@ -159,7 +158,6 @@ class AttendanceCorrectionTest extends TestCase
         $response = $this->post(route('attendances.correction.store', ['attendance' => $attendance->id]), $validData);
 
         $response->assertRedirect();
-        $response->assertSessionHas('success', '勤怠修正申請を送信しました。');
 
         $this->assertDatabaseHas('attendance_corrections', [
             'attendance_id' => $attendance->id,

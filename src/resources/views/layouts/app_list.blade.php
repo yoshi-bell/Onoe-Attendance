@@ -14,7 +14,7 @@
 @section('content')
 <div class="attendance-list__content">
     <div class="attendance-list__heading">
-        <h1>@yield('list_h1_title')</h1>
+        <h1 class="attendance-list__title">@yield('list_h1_title')</h1>
     </div>
 
     <div class="date-navigation">
@@ -75,30 +75,32 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script> {{-- 公式ドキュメントに合わせてindex.jsに変更 --}}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
 <script>
-    window.onload = function() { // または DOMContentLoaded を使う
+    window.onload = function() {
         const monthDisplayTrigger = document.getElementById('monthDisplayTrigger');
         const monthPickerInput = document.getElementById('monthPicker');
 
         const fpMonth = flatpickr(monthPickerInput, {
             locale: flatpickr.l10ns.ja,
-            plugins: [new monthSelectPlugin({
-                dateFormat: 'Y/m',
-            })],
+            plugins: [new monthSelectPlugin({})],
             dateFormat: 'Y/m',
             defaultDate: monthPickerInput.value,
             allowInput: false,
             onChange: function(selectedDates, dateStr, instance) {
-                if (dateStr) {
+                if (selectedDates.length > 0) {
+                    const year = selectedDates[0].getFullYear();
+                    const month = ('0' + (selectedDates[0].getMonth() + 1)).slice(-2);
+                    const urlDateStr = `${year}-${month}`;
+
                     const currentUrl = new URL(window.location.href);
-                    currentUrl.searchParams.set('month', dateStr);
+                    currentUrl.searchParams.set('month', urlDateStr);
                     window.location.href = currentUrl.toString();
                 }
             }
         });
 
-        // inputがクリックされても開くが、div全体のクリックでも開くように残しておく
+        // inputのクリックだけでなくdiv全体のクリックでも開くようにする
         monthDisplayTrigger.addEventListener('click', function() {
             fpMonth.open();
         });

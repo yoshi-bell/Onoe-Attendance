@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
 use App\Models\Rest;
@@ -18,13 +17,11 @@ class RestController extends Controller
         $user = Auth::user();
         $today = Carbon::today();
 
-        // 今日の、まだ終了していない勤怠記録を取得
         $attendance = Attendance::where('user_id', $user->id)
             ->whereDate('work_date', $today)
             ->whereNull('end_time')
             ->first();
 
-        // 勤怠記録があり、かつ現在休憩中でないことを確認
         if ($attendance) {
             $latestBreak = $attendance->rests()->latest()->first();
             $isOnBreak = $latestBreak && !$latestBreak->end_time;
@@ -48,14 +45,12 @@ class RestController extends Controller
         $user = Auth::user();
         $today = Carbon::today();
 
-        // 今日の、まだ終了していない勤怠記録を取得
         $attendance = Attendance::where('user_id', $user->id)
             ->whereDate('work_date', $today)
             ->whereNull('end_time')
             ->first();
 
         if ($attendance) {
-            // 休憩開始していて、まだ終了していない最新の休憩記録を取得
             $break = $attendance->rests()
                 ->whereNull('end_time')
                 ->latest()

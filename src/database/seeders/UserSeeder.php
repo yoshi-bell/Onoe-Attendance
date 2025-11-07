@@ -15,13 +15,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $emails = [
-            'test1@example.com',
-            'test2@example.com',
-            'test3@example.com',
-            'test4@example.com',
-            'test5@example.com',
-        ];
+        $emails = [];
+        for ($i = 1; $i <= 30; $i++) {
+            $emails[] = "test{$i}@example.com";
+        }
 
         foreach ($emails as $email) {
             User::factory()->create([
