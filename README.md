@@ -51,7 +51,7 @@ chmod -R 777 storage
 
 "注意": "777"は全てのユーザーに読み書き実行を許可する最も緩い権限設定です。これはローカル開発環境での権限問題を簡易的に解決するためのもので、本番環境では使用しないでください。
 
-# Dockerを再ビルドし.envファイルの変更を反映
+# Dockerを再起動し.envファイルの変更を反映
 docker-compose down
 docker-compose up -d
 ```
@@ -114,14 +114,11 @@ docker-compose up -d
   - **パスワード:**
      - `adminpass`
 
-- **一般ユーザー 5名**
+
  > ※件数の変更があるかも,確認後修正
-  - **メールアドレス:**
-    - `test1@example.com`
-    - `test2@example.com`
-    - `test3@example.com`
-    - `test4@example.com`
-    - `test5@example.com`
+- **一般ユーザー 30名**
+  - **メールアドレス:test{user_id}@example.comという形で連番になっています。**
+    - `test1@example.com` ～ `test30@example.com`
   - **一般ユーザー共通パスワード:**
     - `usertest`
 
@@ -137,8 +134,11 @@ PHPUnitによるフィーチャーテストが用意されています。
 
     ```bash
     # MySQLコンテナ内で `onoe_attendance_test` データベースを作成
-    docker compose exec mysql mysql -u root -p'root' -e "CREATE DATABASE onoe_attendance_test;"
+    docker compose exec mysql mysql -u root -p -e "CREATE DATABASE onoe_attendance_test;"
     ```
+
+    コマンド実行後、パスワードの入力を求められます。
+    `docker-compose.yml` に定義されている `MYSQL_ROOT_PASSWORD` の値（デフォルトでは `root`）を入力してください。
 
 2.  **テスト用環境ファイルの作成**
 
