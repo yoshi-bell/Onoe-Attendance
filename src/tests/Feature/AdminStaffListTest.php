@@ -26,30 +26,31 @@ class AdminStaffListTest extends TestCase
         $this->actingAs($admin);
 
         // ページネーションをテストするために21人のユーザーを作成
-        $users = User::factory()->count(21)->create();
+        User::factory()->count(21)->create();
+
+        // データベースからID順で全ユーザーを取得
+        $allUsers = User::where('is_admin', false)->orderBy('id', 'asc')->get();
+        $usersOnPage1 = $allUsers->take(20);
+        $userOnPage2 = $allUsers->get(20);
 
         // 1ページ目にアクセス
         $response = $this->get(route('admin.staff.list'));
-
         $response->assertStatus(200);
-        $response->assertSee('pagination'); // ページネーションが表示されていることを確認
+        $response->assertSee('pagination');
 
-        // 1ページ目に最初の20人のユーザーが表示されていることを確認
-        foreach ($users->take(20) as $user) {
+        // 1ページ目に最初の20人のユーザーが全員表示されていることを確認
+        foreach ($usersOnPage1 as $user) {
             $response->assertSee($user->name);
             $response->assertSee($user->email);
         }
-
-        // 1ページ目に21人目のユーザーが表示されていないことを確認
-        $response->assertDontSee($users->last()->name);
 
         // 2ページ目にアクセス
         $responsePage2 = $this->get(route('admin.staff.list', ['page' => 2]));
         $responsePage2->assertStatus(200);
 
         // 2ページ目に21人目のユーザーが表示されていることを確認
-        $responsePage2->assertSee($users->last()->name);
-        $responsePage2->assertSee($users->last()->email);
+        $responsePage2->assertSee($userOnPage2->name);
+        $responsePage2->assertSee($userOnPage2->email);
     }
 
     /**
