@@ -66,4 +66,28 @@ class AdminLoginTest extends TestCase
 
         $response->assertSessionHasErrors(['email' => 'ログイン情報が登録されていません']);
     }
+
+    /**
+     * @test
+     * @group admin-login
+     * 正しい情報が入力された場合、ログイン処理が実行される(追加テストケース)
+     *
+     * @return void
+     */
+    public function 正しい情報が入力された場合_ログイン処理が実行される()
+    {
+        $admin = User::factory()->create([
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+            'is_admin' => true,
+        ]);
+
+        $response = $this->post('/admin/login', [
+            'email' => 'admin@example.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect('/admin/attendance/list');
+        $this->assertAuthenticatedAs($admin);
+    }
 }

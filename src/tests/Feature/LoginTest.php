@@ -65,4 +65,27 @@ class LoginTest extends TestCase
 
         $response->assertSessionHasErrors(['email' => 'ログイン情報が登録されていません']);
     }
+
+    /**
+     * @test
+     * @group login
+     * 正しい情報が入力された場合、ログイン処理が実行される(追加テストケース)
+     *
+     * @return void
+     */
+    public function 正しい情報が入力された場合_ログイン処理が実行される()
+    {
+        $user = User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'test@example.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect('/attendance');
+        $this->assertAuthenticatedAs($user);
+    }
 }
