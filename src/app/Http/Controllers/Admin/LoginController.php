@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\Controller;
 
-class AdminLoginController extends Controller
+class LoginController extends Controller
 {
     /**
      * 管理者ログインフォームを表示する

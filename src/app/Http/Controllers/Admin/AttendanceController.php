@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Carbon\Carbon;
 use App\Http\Requests\AttendanceCorrectionRequest;
+use App\Http\Controllers\Controller;
 
-class AdminAttendanceController extends Controller
+class AttendanceController extends Controller
 {
     /**
      * Display a listing of the resource.

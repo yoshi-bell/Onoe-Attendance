@@ -180,4 +180,24 @@ class AttendanceListTest extends TestCase
         $response->assertSee(Carbon::parse($attendance->work_date)->format('Y年'));
         $response->assertSee(Carbon::parse($attendance->work_date)->format('m月d日'));
     }
+
+    /**
+     * @test
+     */
+    public function 日付が正しいフォーマットで表示される()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        // 既知の勤怠記録を作成
+        Attendance::factory()->create([
+            'user_id' => $user->id,
+            'work_date' => '2023-11-20', // Monday
+        ]);
+
+        $response = $this->get(route('attendance.list', ['month' => '2023-11']));
+
+        $response->assertStatus(200);
+        $response->assertSee('11/20(月)');
+    }
 }

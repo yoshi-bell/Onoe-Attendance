@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\RestController;
 use App\Http\Controllers\CorrectionRequestController;
+use App\Http\Controllers\Admin\LoginController as AdminLoginController;
+use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
+use App\Http\Controllers\Admin\CorrectionRequestController as AdminCorrectionRequestController;
+use App\Http\Controllers\Admin\StaffController as AdminStaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,41 +56,41 @@ Route::middleware(['auth', 'verified', 'is_general_user'])->group(function () {
 // 管理者用認証ルート
 Route::prefix('admin')->name('admin.')->group(function () {
     // ログインページ
-    Route::get('/login', [App\Http\Controllers\AdminLoginController::class, 'showLoginForm'])->name('login');
+    Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('login');
 
     // ログイン処理
-    Route::post('/login', [App\Http\Controllers\AdminLoginController::class, 'login']);
+    Route::post('/login', [AdminLoginController::class, 'login']);
 
     // ログアウト処理
-    Route::post('/logout', [App\Http\Controllers\AdminLoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AdminLoginController::class, 'logout'])->name('logout');
 });
 
 // 管理者専用機能ルート
 Route::prefix('admin')->middleware(['auth', 'is_admin'])->name('admin.')->group(function () {
     // 日次勤怠一覧ページ (管理者)
-    Route::get('/attendance/list', [App\Http\Controllers\AdminAttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('attendance.index');
 
     // 勤怠詳細ページ (管理者)
-    Route::get('/attendance/{attendance}', [App\Http\Controllers\AdminAttendanceController::class, 'show'])->name('attendance.show');
+    Route::get('/attendance/{attendance}', [AdminAttendanceController::class, 'show'])->name('attendance.show');
 
     // 勤怠情報更新処理 (管理者)
-    Route::put('/attendance/{attendance}', [App\Http\Controllers\AdminAttendanceController::class, 'update'])->name('attendance.update');
+    Route::put('/attendance/{attendance}', [AdminAttendanceController::class, 'update'])->name('attendance.update');
 
     // 申請一覧ページ (管理者)
-    Route::get('/stamp_correction_request/list', [App\Http\Controllers\AdminCorrectionRequestController::class, 'index'])->name('corrections.index');
+    Route::get('/stamp_correction_request/list', [AdminCorrectionRequestController::class, 'index'])->name('corrections.index');
 
     // 修正申請承認ページ
-    Route::get('/stamp_correction_request/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'show'])->name('corrections.approve.show');
+    Route::get('/stamp_correction_request/approve/{attendanceCorrection}', [AdminCorrectionRequestController::class, 'show'])->name('corrections.approve.show');
 
     // 修正申請承認処理
-    Route::post('/stamp_correction_request/approve/{attendanceCorrection}', [App\Http\Controllers\AdminCorrectionRequestController::class, 'approve'])->name('corrections.approve');
+    Route::post('/stamp_correction_request/approve/{attendanceCorrection}', [AdminCorrectionRequestController::class, 'approve'])->name('corrections.approve');
 
     // スタッフ一覧ページ
-    Route::get('/staff/list', [App\Http\Controllers\AdminStaffController::class, 'index'])->name('staff.list');
+    Route::get('/staff/list', [AdminStaffController::class, 'index'])->name('staff.list');
 
     // スタッフ別勤怠一覧ページ
-    Route::get('/attendance/staff/{user}', [App\Http\Controllers\AdminStaffController::class, 'showAttendance'])->name('attendance.staff.showAttendance');
+    Route::get('/attendance/staff/{user}', [AdminStaffController::class, 'showAttendance'])->name('attendance.staff.showAttendance');
 
     // CSVエクスポート処理
-    Route::get('/attendance/staff/{user}/export-csv', [App\Http\Controllers\AdminStaffController::class, 'exportCsv'])->name('attendance.staff.exportCsv');
+    Route::get('/attendance/staff/{user}/export-csv', [AdminStaffController::class, 'exportCsv'])->name('attendance.staff.exportCsv');
 });

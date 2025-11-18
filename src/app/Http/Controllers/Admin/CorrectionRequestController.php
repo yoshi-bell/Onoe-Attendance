@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\AttendanceCorrection;
-
 use App\Models\Attendance;
 use App\Models\Rest;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
-class AdminCorrectionRequestController extends Controller
+class CorrectionRequestController extends Controller
 {
     public function index(Request $request)
     {

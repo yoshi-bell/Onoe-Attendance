@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Attendance extends Model
 {
@@ -35,6 +36,26 @@ class Attendance extends Model
     public function corrections()
     {
         return $this->hasMany(AttendanceCorrection::class);
+    }
+
+    /**
+     * work_dateを日本語の曜日付きでフォーマットするアクセサ
+     */
+    public function getFormattedWorkDateAttribute()
+    {
+        return self::getFormattedDateWithDay($this->work_date);
+    }
+
+    /**
+     * 日付を日本語の曜日付きでフォーマットする静的ヘルパーメソッド
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    public static function getFormattedDateWithDay(Carbon $date, $format = 'Y年m月d日')
+    {
+        $week = ['日', '月', '火', '水', '木', '金', '土'];
+        return $date->format($format) . '(' . $week[$date->dayOfWeek] . ')';
     }
 
     /**

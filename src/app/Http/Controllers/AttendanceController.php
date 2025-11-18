@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AttendanceCorrectionRequest;
 
+use App\Services\AttendanceStatusService;
+
 class AttendanceController extends Controller
 {
     /**
@@ -18,45 +20,16 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
         $now = Carbon::now();
-
-        $week = ['日', '月', '火', '水', '木', '金', '土'];
-        $date = $now->format('Y年m月d日') . '(' . $week[$now->dayOfWeek] . ')';
+        $date = Attendance::getFormattedDateWithDay($now);
         $time = $now->format('H:i');
 
-        $today = $now->copy()->startOfDay();
-        $statusText = '勤務外';
-        $isWorking = false;
-        $isOnBreak = false;
-        $hasFinishedWork = false;
-
-        $attendance = Attendance::where('user_id', Auth::id())
-            ->whereDate('work_date', $today)
-            ->first();
-
-        if ($attendance) {
-            if ($attendance->end_time) {
-                $hasFinishedWork = true;
-                $statusText = '退勤済';
-            } elseif ($attendance->start_time) {
-                $isWorking = true;
-                $statusText = '出勤中';
-                $latestBreak = $attendance->rests()->latest()->first();
-                if ($latestBreak && !$latestBreak->end_time) {
-                    $isOnBreak = true;
-                    $statusText = '休憩中';
-                }
-            }
-        }
+        $status = new AttendanceStatusService(Auth::user());
 
         return view('attendance.index', compact(
             'date',
             'time',
-            'statusText',
-            'isWorking',
-            'isOnBreak',
-            'hasFinishedWork'
+            'status'
         ));
     }
 
@@ -136,11 +109,12 @@ class AttendanceController extends Controller
             $date = $currentDate->copy()->day($day);
             $attendanceForDay = $attendances->get($day);
 
-            $week = ['日', '月', '火', '水', '木', '金', '土'];
-            $dayOfWeek = $week[$date->dayOfWeek];
+            $formattedDate = $attendanceForDay
+                ? Attendance::getFormattedDateWithDay($attendanceForDay->work_date, 'm/d')
+                : Attendance::getFormattedDateWithDay($date, 'm/d');
 
             $calendarData[] = [
-                'date' => $date->format('m/d') . '(' . $dayOfWeek . ')',
+                'date' => $formattedDate,
                 'attendance' => $attendanceForDay
             ];
         }

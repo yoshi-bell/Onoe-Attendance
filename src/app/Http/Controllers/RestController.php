@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
 use App\Models\Rest;
 use Carbon\Carbon;
+use App\Services\AttendanceStatusService;
 
 class RestController extends Controller
 {
@@ -15,23 +16,17 @@ class RestController extends Controller
     public function start()
     {
         $user = Auth::user();
-        $today = Carbon::today();
+        $status = new AttendanceStatusService($user);
 
-        $attendance = Attendance::where('user_id', $user->id)
-            ->whereDate('work_date', $today)
-            ->whereNull('end_time')
-            ->first();
+        if ($status->isWorking && !$status->isOnBreak) {
+            $attendance = Attendance::where('user_id', $user->id)
+                ->whereDate('work_date', Carbon::today())
+                ->first();
 
-        if ($attendance) {
-            $latestBreak = $attendance->rests()->latest()->first();
-            $isOnBreak = $latestBreak && !$latestBreak->end_time;
-
-            if (!$isOnBreak) {
-                Rest::create([
-                    'attendance_id' => $attendance->id,
-                    'start_time' => Carbon::now(),
-                ]);
-            }
+            Rest::create([
+                'attendance_id' => $attendance->id,
+                'start_time' => Carbon::now(),
+            ]);
         }
 
         return redirect()->route('attendance');
@@ -43,14 +38,13 @@ class RestController extends Controller
     public function end()
     {
         $user = Auth::user();
-        $today = Carbon::today();
+        $status = new AttendanceStatusService($user);
 
-        $attendance = Attendance::where('user_id', $user->id)
-            ->whereDate('work_date', $today)
-            ->whereNull('end_time')
-            ->first();
+        if ($status->isOnBreak) {
+            $attendance = Attendance::where('user_id', $user->id)
+                ->whereDate('work_date', Carbon::today())
+                ->first();
 
-        if ($attendance) {
             $break = $attendance->rests()
                 ->whereNull('end_time')
                 ->latest()

@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\Controller;
 
-class AdminStaffController extends Controller
+class StaffController extends Controller
 {
     /**
      * スタッフ一覧を表示する
