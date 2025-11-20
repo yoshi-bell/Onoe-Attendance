@@ -94,15 +94,19 @@ class AttendanceController extends Controller
      */
     public function list(Request $request)
     {
-        $today = Carbon::today();
         $month = $request->input('month', Carbon::now()->format('Y-m'));
-        $currentDate = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
-        $prevMonth = $currentDate->copy()->subMonth()->format('Y-m');
-        $nextMonth = $currentDate->copy()->addMonth()->format('Y-m');
+        $currentDate = Carbon::createFromFormat('Y-m', $month)->startOfMonth(); // currentDateを一度だけ計算
+
+        $navigation = [
+            'prevMonth' => $currentDate->copy()->subMonth()->format('Y-m'),
+            'nextMonth' => $currentDate->copy()->addMonth()->format('Y-m'),
+            'currentDate' => $currentDate, // 計算済みの$currentDateオブジェクトをそのまま使用
+            'today' => Carbon::today(), // todayもここで計算
+        ];
 
         $calendarData = $this->calendarService->generate(Auth::user(), $currentDate);
 
-        return view('attendance.list', compact('calendarData', 'prevMonth', 'nextMonth', 'currentDate', 'today'));
+        return view('attendance.list', compact('calendarData', 'navigation'));
     }
 
     /**

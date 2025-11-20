@@ -34,15 +34,19 @@ class StaffController extends Controller
      */
     public function showAttendance(Request $request, User $user)
     {
-        $today = Carbon::today();
         $month = $request->input('month', Carbon::now()->format('Y-m'));
         $currentDate = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
-        $prevMonth = $currentDate->copy()->subMonth()->format('Y-m');
-        $nextMonth = $currentDate->copy()->addMonth()->format('Y-m');
+
+        $navigation = [
+            'prevMonth' => $currentDate->copy()->subMonth()->format('Y-m'),
+            'nextMonth' => $currentDate->copy()->addMonth()->format('Y-m'),
+            'currentDate' => $currentDate,
+            'today' => Carbon::today(),
+        ];
 
         $calendarData = $this->calendarService->generate($user, $currentDate);
 
-        return view('admin.staff.attendance_list', compact('calendarData', 'prevMonth', 'nextMonth', 'currentDate', 'today', 'user'));
+        return view('admin.staff.attendance_list', compact('calendarData', 'navigation', 'user'));
     }
 
     /**

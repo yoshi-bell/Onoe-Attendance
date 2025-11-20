@@ -11,17 +11,17 @@
 @section('content')
 <div class="attendance-list__content">
     <div class="attendance-list__heading">
-        <h1 class="attendance-list__title">{{ $date->format('Y年n月j日') }}の勤怠</>
+        <h1 class="attendance-list__title">{{ $navigation['date']->format('Y年n月j日') }}の勤怠</>
         </h1>
     </div>
 
     <div class="date-navigation">
-        <a class="date-nav-button" href="{{ route('admin.attendance.index', ['date' => $prevDate]) }}"><i class="fa-solid fa-arrow-left"></i>前日</a>
+        <a class="date-nav-button" href="{{ route('admin.attendance.index', ['date' => $navigation['prevDate']]) }}"><i class="fa-solid fa-arrow-left"></i>前日</a>
         <div class="date-display" id="dateDisplayTrigger">
             <img src="{{ asset('images/icon-calendar.png') }}" alt="カレンダーアイコン">
-            <input type="text" class="attendance-date__input" id="datePicker" value="{{ $date->format('Y/m/d') }}">
+            <input type="text" class="attendance-date__input" id="datePicker" value="{{ $navigation['date']->format('Y/m/d') }}">
         </div>
-        <a class="date-nav-button" href="{{ route('admin.attendance.index', ['date' => $nextDate]) }}">翌日<i class="fa-solid fa-arrow-right"></i></a>
+        <a class="date-nav-button" href="{{ route('admin.attendance.index', ['date' => $navigation['nextDate']]) }}">翌日<i class="fa-solid fa-arrow-right"></i></a>
     </div>
 
     {{ $attendances->withQueryString()->links() }}
@@ -45,7 +45,7 @@
                 <td>{{ $attendance->total_rest_time ?? '0:00' }}</td>
                 <td>{{ $attendance->work_time ?? '' }}</td>
                 <td>
-                    @if (\Carbon\Carbon::parse($attendance->work_date)->isBefore($today))
+                    @if (\Carbon\Carbon::parse($attendance->work_date)->isBefore($navigation['today']))
                     <a href="{{ route('admin.attendance.show', ['attendance' => $attendance->id]) }}">詳細</a>
                     @else
                     詳細

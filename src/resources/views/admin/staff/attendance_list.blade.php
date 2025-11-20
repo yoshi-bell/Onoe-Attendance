@@ -16,7 +16,7 @@
 
 @section('extra_buttons')
     <div class="csv-export-button-wrapper">
-        <a href="{{ route('admin.attendance.staff.exportCsv', ['user' => $user->id, 'month' => $currentDate->format('Y/m')]) }}" class="csv-export-button" id="export-button">CSV出力</a>
+        <a href="{{ route('admin.attendance.staff.exportCsv', ['user' => $user->id, 'month' => $navigation['currentDate']->format('Y/m')]) }}" class="csv-export-button" id="export-button">CSV出力</a>
     </div>
 @endsection
 

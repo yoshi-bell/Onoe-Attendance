@@ -23,11 +23,14 @@ class AttendanceController extends Controller
             ->with(['user', 'rests'])
             ->paginate(20);
 
-        $prevDate = $date->copy()->subDay()->format('Y-m-d');
-        $nextDate = $date->copy()->addDay()->format('Y-m-d');
-        $today = Carbon::today();
+        $navigation = [
+            'date' => $date,
+            'prevDate' => $date->copy()->subDay()->format('Y-m-d'),
+            'nextDate' => $date->copy()->addDay()->format('Y-m-d'),
+            'today' => Carbon::today(),
+        ];
 
-        return view('admin.attendance.index', compact('attendances', 'date', 'prevDate', 'nextDate', 'today'));
+        return view('admin.attendance.index', compact('attendances', 'navigation'));
     }
 
     /**

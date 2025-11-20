@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\AttendanceCorrection;
-use App\Models\Attendance;
-use App\Models\Rest;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 use App\Services\CorrectionService;

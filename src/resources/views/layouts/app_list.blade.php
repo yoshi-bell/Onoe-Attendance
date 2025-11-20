@@ -24,12 +24,12 @@
         $monthNavParams = [];
         }
         @endphp
-        <a class="date-nav-button" href="{{ route(View::getSection('month_nav_route_name'), array_merge($monthNavParams, ['month' => $prevMonth])) }}"><i class="fa-solid fa-arrow-left"></i> 前月</a>
+        <a class="date-nav-button" href="{{ route(View::getSection('month_nav_route_name'), array_merge($monthNavParams, ['month' => $navigation['prevMonth']])) }}"><i class="fa-solid fa-arrow-left"></i> 前月</a>
         <div class="date-display" id="monthDisplayTrigger">
             <img src="{{ asset('images/icon-calendar.png') }}" alt="カレンダーアイコン">
-            <input type="text" class="attendance-date__input" id="monthPicker" value="{{ $currentDate->format('Y/m') }}">
+            <input type="text" class="attendance-date__input" id="monthPicker" value="{{ $navigation['currentDate']->format('Y/m') }}">
         </div>
-        <a class="date-nav-button" href="{{ route(View::getSection('month_nav_route_name'), array_merge($monthNavParams, ['month' => $nextMonth])) }}">翌月 <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="date-nav-button" href="{{ route(View::getSection('month_nav_route_name'), array_merge($monthNavParams, ['month' => $navigation['nextMonth']])) }}">翌月 <i class="fa-solid fa-arrow-right"></i></a>
     </div>
 
     <table class="attendance-table">
@@ -53,7 +53,7 @@
                 <td>{{ $dayData['attendance']->total_rest_time }}</td>
                 <td>{{ $dayData['attendance']->work_time ?? '' }}</td>
                 <td>
-                    @if ($dayData['attendance'] && \Carbon\Carbon::parse($dayData['attendance']->work_date)->isBefore($today))
+                    @if ($dayData['attendance'] && \Carbon\Carbon::parse($dayData['attendance']->work_date)->isBefore($navigation['today']))
                     <a href="{{ route(View::getSection('detail_link_route'), ['attendance' => $dayData['attendance']->id]) }}">詳細</a>
                     @else
                     詳細
