@@ -9,10 +9,23 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AttendanceCorrectionRequest;
 
-use App\Services\AttendanceStatusService;
+use App\ViewModels\AttendanceIndexData;
+use App\Services\CalendarService;
+use App\Services\CorrectionService;
 
 class AttendanceController extends Controller
 {
+    private $calendarService;
+    private $correctionService;
+
+    public function __construct(
+        CalendarService $calendarService,
+        CorrectionService $correctionService
+    ) {
+        $this->calendarService = $calendarService;
+        $this->correctionService = $correctionService;
+    }
+
     /**
      * Display the attendance clock-in/out page.
      *
@@ -20,17 +33,9 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $now = Carbon::now();
-        $date = Attendance::getFormattedDateWithDay($now);
-        $time = $now->format('H:i');
-
-        $status = new AttendanceStatusService(Auth::user());
-
-        return view('attendance.index', compact(
-            'date',
-            'time',
-            'status'
-        ));
+        return view('attendance.index', [
+            'attendanceData' => new AttendanceIndexData(Auth::user())
+        ]);
     }
 
     /**
@@ -95,29 +100,7 @@ class AttendanceController extends Controller
         $prevMonth = $currentDate->copy()->subMonth()->format('Y-m');
         $nextMonth = $currentDate->copy()->addMonth()->format('Y-m');
 
-        $attendances = Attendance::where('user_id', Auth::id())
-            ->whereYear('work_date', $currentDate->year)
-            ->whereMonth('work_date', $currentDate->month)
-            ->get()
-            ->keyBy(function ($item) {
-                return Carbon::parse($item->work_date)->day;
-            });
-
-        $daysInMonth = $currentDate->daysInMonth;
-        $calendarData = [];
-        for ($day = 1; $day <= $daysInMonth; $day++) {
-            $date = $currentDate->copy()->day($day);
-            $attendanceForDay = $attendances->get($day);
-
-            $formattedDate = $attendanceForDay
-                ? Attendance::getFormattedDateWithDay($attendanceForDay->work_date, 'm/d')
-                : Attendance::getFormattedDateWithDay($date, 'm/d');
-
-            $calendarData[] = [
-                'date' => $formattedDate,
-                'attendance' => $attendanceForDay
-            ];
-        }
+        $calendarData = $this->calendarService->generate(Auth::user(), $currentDate);
 
         return view('attendance.list', compact('calendarData', 'prevMonth', 'nextMonth', 'currentDate', 'today'));
     }
@@ -139,27 +122,7 @@ class AttendanceController extends Controller
     public function storeCorrection(AttendanceCorrectionRequest $request, Attendance $attendance)
     {
         try {
-            DB::transaction(function () use ($request, $attendance) {
-                $workDate = Carbon::parse($attendance->work_date)->format('Y-m-d');
-
-                $attendanceCorrection = $attendance->corrections()->create([
-                    'requester_id' => Auth::id(),
-                    'requested_start_time' => $workDate . ' ' . $request->input('requested_start_time'),
-                    'requested_end_time' => $workDate . ' ' . $request->input('requested_end_time'),
-                    'reason' => $request->input('reason'),
-                ]);
-
-                if ($request->has('rests')) {
-                    foreach ($request->input('rests') as $restData) {
-                        if (!empty($restData['start_time']) && !empty($restData['end_time'])) {
-                            $attendanceCorrection->restCorrections()->create([
-                                'requested_start_time' => $workDate . ' ' . $restData['start_time'],
-                                'requested_end_time' => $workDate . ' ' . $restData['end_time'],
-                            ]);
-                        }
-                    }
-                }
-            });
+            $this->correctionService->storeRequest($request, $attendance);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', '申請の送信に失敗しました。もう一度お試しください。');
         }

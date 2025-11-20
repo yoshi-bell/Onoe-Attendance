@@ -39,14 +39,6 @@ class Attendance extends Model
     }
 
     /**
-     * work_dateを日本語の曜日付きでフォーマットするアクセサ
-     */
-    public function getFormattedWorkDateAttribute()
-    {
-        return self::getFormattedDateWithDay($this->work_date);
-    }
-
-    /**
      * 日付を日本語の曜日付きでフォーマットする静的ヘルパーメソッド
      *
      * @param Carbon $date

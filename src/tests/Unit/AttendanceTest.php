@@ -10,9 +10,9 @@ class AttendanceTest extends TestCase
 {
     /**
      * @test
-     * @group AttendanceAccessor
+     * @group AttendanceStaticMethod
      */
-    public function work_dateが日本語の曜日付きでフォーマットされる()
+    public function getFormattedDateWithDayが日付を正しくフォーマットする()
     {
         $testDates = [
             '2023-11-19' => '2023年11月19日(日)', // Sunday
@@ -24,11 +24,9 @@ class AttendanceTest extends TestCase
             '2023-11-25' => '2023年11月25日(土)', // Saturday
         ];
 
-        $attendance = new Attendance();
-
         foreach ($testDates as $dateString => $expectedFormattedDate) {
-            $attendance->work_date = $dateString;
-            $formattedDate = $attendance->formatted_work_date;
+            $date = Carbon::parse($dateString);
+            $formattedDate = Attendance::getFormattedDateWithDay($date);
             $this->assertEquals($expectedFormattedDate, $formattedDate, "Failed for date: {$dateString}");
         }
     }

@@ -9,8 +9,17 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Controller;
 
+use App\Services\CalendarService;
+
 class StaffController extends Controller
 {
+    private $calendarService;
+
+    public function __construct(CalendarService $calendarService)
+    {
+        $this->calendarService = $calendarService;
+    }
+
     /**
      * スタッフ一覧を表示する
      */
@@ -31,44 +40,9 @@ class StaffController extends Controller
         $prevMonth = $currentDate->copy()->subMonth()->format('Y-m');
         $nextMonth = $currentDate->copy()->addMonth()->format('Y-m');
 
-        $calendarData = $this->getAttendanceData($user, $currentDate);
+        $calendarData = $this->calendarService->generate($user, $currentDate);
 
         return view('admin.staff.attendance_list', compact('calendarData', 'prevMonth', 'nextMonth', 'currentDate', 'today', 'user'));
-    }
-
-    /**
-     * 特定のユーザーの指定された月の勤怠データを取得する
-     *
-     * @param User $user
-     * @param Carbon $currentDate
-     * @return array
-     */
-    private function getAttendanceData(User $user, Carbon $currentDate)
-    {
-        $attendances = Attendance::where('user_id', $user->id)
-            ->whereYear('work_date', $currentDate->year)
-            ->whereMonth('work_date', $currentDate->month)
-            ->get()
-            ->keyBy(function ($item) {
-                return Carbon::parse($item->work_date)->day;
-            });
-
-        $daysInMonth = $currentDate->daysInMonth;
-        $calendarData = [];
-        for ($day = 1; $day <= $daysInMonth; $day++) {
-            $date = $currentDate->copy()->day($day);
-            $attendanceForDay = $attendances->get($day);
-
-            $week = ['日', '月', '火', '水', '木', '金', '土'];
-            $dayOfWeek = $week[$date->dayOfWeek];
-
-            $calendarData[] = [
-                'date' => $date->format('m/d') . '(' . $dayOfWeek . ')',
-                'attendance' => $attendanceForDay
-            ];
-        }
-
-        return $calendarData;
     }
 
     /**
@@ -78,7 +52,7 @@ class StaffController extends Controller
     {
         $month = $request->input('month', Carbon::now()->format('Y/m'));
         $currentDate = Carbon::createFromFormat('Y/m', $month)->startOfMonth();
-        $calendarData = $this->getAttendanceData($user, $currentDate);
+        $calendarData = $this->calendarService->generate($user, $currentDate);
 
         $fileName = 'attendance_' . $user->name . '_' . $currentDate->format('Ym') . '.csv';
 

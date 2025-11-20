@@ -9,8 +9,17 @@ use App\Models\Rest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
+use App\Services\CorrectionService;
+
 class CorrectionRequestController extends Controller
 {
+    private $correctionService;
+
+    public function __construct(CorrectionService $correctionService)
+    {
+        $this->correctionService = $correctionService;
+    }
+
     public function index(Request $request)
     {
         $status = $request->get('status', 'pending');
@@ -49,24 +58,7 @@ class CorrectionRequestController extends Controller
             return redirect()->back()->with('error', 'この申請は既に処理されています。');
         }
 
-        DB::transaction(function () use ($attendanceCorrection) {
-            $attendance = $attendanceCorrection->attendance;
-            $attendance->start_time = $attendanceCorrection->requested_start_time;
-            $attendance->end_time = $attendanceCorrection->requested_end_time;
-            $attendance->save();
-
-            $attendance->rests()->delete(); // 既存の休憩を全て削除
-            foreach ($attendanceCorrection->restCorrections as $restCorrection) {
-                Rest::create([
-                    'attendance_id' => $attendance->id,
-                    'start_time' => $restCorrection->requested_start_time,
-                    'end_time' => $restCorrection->requested_end_time,
-                ]);
-            }
-
-            $attendanceCorrection->status = 'approved';
-            $attendanceCorrection->save();
-        });
+        $this->correctionService->approveRequest($attendanceCorrection);
 
         return redirect()->route('admin.corrections.approve.show', ['attendanceCorrection' => $attendanceCorrection->id])->with('success', '申請を承認しました。');
     }

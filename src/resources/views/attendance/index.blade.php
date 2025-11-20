@@ -9,28 +9,28 @@
 @section('content')
 <div class="attendance-container">
     <div class="status-header">
-        <p class="status-text">{{ $status->statusText }}</p>
+        <p class="status-text">{{ $attendanceData->status->statusText }}</p>
     </div>
 
     <div class="datetime-panel">
-        <p class="date-display">{{ $date }}</p>
-        <p class="time-display">{{ $time }}</p>
+        <p class="date-display">{{ $attendanceData->date }}</p>
+        <p class="time-display">{{ $attendanceData->time }}</p>
     </div>
 
-    @if ($status->hasFinishedWork)
+    @if ($attendanceData->status->hasFinishedWork)
     <div class="completion-message">
         <p>お疲れ様でした。</p>
     </div>
     @else
     <div class="timestamp-container">
-        @if(!$status->isWorking)
+        @if(!$attendanceData->status->isWorking)
         <form class="timestamp-form" action="{{ route('attendance.start') }}" method="post" novalidate>
             @csrf
             <button type="submit" class="timestamp-button">出勤</button>
         </form>
         @endif
 
-        @if($status->isWorking && !$status->isOnBreak)
+        @if($attendanceData->status->isWorking && !$attendanceData->status->isOnBreak)
         <form class="timestamp-form" action="{{ route('attendance.end') }}" method="post" novalidate>
             @csrf
             <button type="submit" class="timestamp-button">退勤</button>
@@ -41,7 +41,7 @@
         </form>
         @endif
 
-        @if($status->isWorking && $status->isOnBreak)
+        @if($attendanceData->status->isWorking && $attendanceData->status->isOnBreak)
         <form class="timestamp-form" action="{{ route('rest.end') }}" method="post" novalidate>
             @csrf
             <button type="submit" class="timestamp-button timestamp-button--rest">休憩戻</button>
