@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AttendanceCorrectionRequest;
 
 use App\ViewModels\AttendanceIndexData;
